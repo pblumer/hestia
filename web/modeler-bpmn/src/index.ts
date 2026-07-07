@@ -13,4 +13,10 @@ export {
   CONFORMANCE_CLASS,
 } from "./moddle";
 export type { BpmnModdleElement } from "./moddle";
-export { processSample } from "./fixtures";
+export {
+  readBpmnWithAtlas,
+  stripExtensionElements,
+  atlasPackages,
+  ATLAS_NAMESPACE,
+} from "./atlas";
+export { processSample, processWithAtlas } from "./fixtures";

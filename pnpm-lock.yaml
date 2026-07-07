@@ -48,12 +48,17 @@ importers:
         specifier: ^3.0.0
         version: 3.2.7(@types/node@22.20.0)(lightningcss@1.32.0)
 
+  contracts/atlas: {}
+
   contracts/dmn: {}
 
   tokens: {}
 
   web/modeler-bpmn:
     dependencies:
+      '@hestia/atlas-contract':
+        specifier: workspace:*
+        version: link:../../contracts/atlas
       '@hestia/modeler-kit':
         specifier: workspace:*
         version: link:../modeler-kit

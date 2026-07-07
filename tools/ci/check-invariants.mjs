@@ -81,6 +81,12 @@ export function isDmnModelDescriptor(jsonText) {
   return jsonText.includes(DMN_MODEL_NS) && /"prefix"\s*:\s*"dmn"/.test(jsonText);
 }
 
+const ATLAS_NS = "http://hestia/atlas/bpmn";
+/** INV-M5: der atlas-Extension-Descriptor (nur in contracts/ erlaubt)? */
+export function isAtlasDescriptor(jsonText) {
+  return jsonText.includes(ATLAS_NS) && /"prefix"\s*:\s*"atlas"/.test(jsonText);
+}
+
 /** INV-H1: verweist ein web/apps-Specifier in die go/-Welt (außer Tokens)? */
 export function isWebToGoImport(spec) {
   if (spec === "@hestia/tokens" || spec.startsWith("@hestia/tokens/")) return false;
@@ -122,8 +128,12 @@ export function runChecks(root = process.cwd()) {
   // INV-M3: der DMN-Descriptor existiert nur in contracts/ (keine Divergenz)
   for (const base of ["web", "apps", "go"]) {
     for (const f of walk(join(root, base), [".json"])) {
-      if (isDmnModelDescriptor(readFileSync(f, "utf8"))) {
+      const jsonText = readFileSync(f, "utf8");
+      if (isDmnModelDescriptor(jsonText)) {
         add("INV-M3", f, "DMN-Descriptor außerhalb contracts/ (Divergenzgefahr)");
+      }
+      if (isAtlasDescriptor(jsonText)) {
+        add("INV-M5", f, "atlas-Extension-Descriptor außerhalb contracts/ (Divergenzgefahr)");
       }
     }
   }

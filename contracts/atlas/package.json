@@ -1,0 +1,12 @@
+{
+  "name": "@hestia/atlas-contract",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "atlas-Extension-Moddle (Ausführungssemantik) als SSOT zwischen modeler-bpmn und der atlas-Engine (INV-M5). Nur via BPMN extensionElements (INV-B3).",
+  "exports": {
+    ".": "./index.ts",
+    "./manifest.json": "./manifest.json",
+    "./atlas.json": "./atlas.json"
+  }
+}

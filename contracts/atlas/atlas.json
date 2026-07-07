@@ -1,0 +1,45 @@
+{
+  "name": "Atlas",
+  "uri": "http://hestia/atlas/bpmn",
+  "prefix": "atlas",
+  "xml": { "tagAlias": "lowerCase" },
+  "types": [
+    {
+      "name": "TaskDefinition",
+      "superClass": ["Element"],
+      "properties": [
+        { "name": "type", "isAttr": true, "type": "String" },
+        { "name": "retries", "isAttr": true, "type": "String", "default": "3" }
+      ]
+    },
+    {
+      "name": "IoMapping",
+      "superClass": ["Element"],
+      "properties": [
+        { "name": "input", "type": "Mapping", "isMany": true, "xml": { "serialize": "property" } },
+        { "name": "output", "type": "Mapping", "isMany": true, "xml": { "serialize": "property" } }
+      ]
+    },
+    {
+      "name": "Mapping",
+      "properties": [
+        { "name": "source", "isAttr": true, "type": "String" },
+        { "name": "target", "isAttr": true, "type": "String" }
+      ]
+    },
+    {
+      "name": "Properties",
+      "superClass": ["Element"],
+      "properties": [
+        { "name": "property", "type": "Property", "isMany": true, "xml": { "serialize": "property" } }
+      ]
+    },
+    {
+      "name": "Property",
+      "properties": [
+        { "name": "name", "isAttr": true, "type": "String" },
+        { "name": "value", "isAttr": true, "type": "String" }
+      ]
+    }
+  ]
+}

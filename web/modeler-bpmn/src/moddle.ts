@@ -29,21 +29,24 @@ export interface BpmnModdleElement {
   [key: string]: unknown;
 }
 
-const PACKAGES = [
-  bpmnDescriptor,
-  bpmndiDescriptor,
-  dcDescriptor,
-  diDescriptor,
-] as unknown as ConstructorParameters<typeof Moddle>[0];
+const BASE_PACKAGES = [bpmnDescriptor, bpmndiDescriptor, dcDescriptor, diDescriptor];
 
-/** Erzeugt eine Moddle-Instanz mit dem Basis-BPMN-Descriptor. */
-export function createBpmnModdle(): Moddle {
-  return new Moddle(PACKAGES);
+/** Erzeugt eine Moddle-Instanz mit dem Basis-BPMN-Descriptor. Zusätzliche
+ *  Pakete (z. B. der atlas-Extension-Moddle) werden über extraPackages ergänzt;
+ *  das Basis-XML bleibt ohne sie OMG-konform (INV-B3). */
+export function createBpmnModdle(extraPackages: unknown[] = []): Moddle {
+  return new Moddle([
+    ...BASE_PACKAGES,
+    ...extraPackages,
+  ] as unknown as ConstructorParameters<typeof Moddle>[0]);
 }
 
 /** Liest BPMN-XML in ein Moddle-Modell. */
-export async function readBpmnXml(xml: string): Promise<BpmnModdleElement> {
-  const reader = new Reader(createBpmnModdle());
+export async function readBpmnXml(
+  xml: string,
+  options?: { extraPackages?: unknown[] },
+): Promise<BpmnModdleElement> {
+  const reader = new Reader(createBpmnModdle(options?.extraPackages ?? []));
   const { rootElement } = await reader.fromXML(xml, "bpmn:Definitions");
   return rootElement as BpmnModdleElement;
 }

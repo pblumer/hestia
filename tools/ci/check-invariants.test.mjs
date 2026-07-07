@@ -6,6 +6,7 @@ import {
   isProjectSpecificGoImport,
   isGoAuthImport,
   isDmnModelDescriptor,
+  isAtlasDescriptor,
   isWebToGoImport,
   isGoToWebImport,
 } from "./check-invariants.mjs";
@@ -61,6 +62,15 @@ describe("INV-M3: DMN-Descriptor nur in contracts/", () => {
   it("ignoriert andere JSON-Dateien", () => {
     expect(isDmnModelDescriptor('{ "name": "irgendwas" }')).toBe(false);
     expect(isDmnModelDescriptor('{ "prefix": "dmndi" }')).toBe(false);
+  });
+});
+
+describe("INV-M5: atlas-Extension-Descriptor nur in contracts/", () => {
+  it("erkennt den atlas-Descriptor", () => {
+    expect(isAtlasDescriptor('{ "prefix": "atlas", "uri": "http://hestia/atlas/bpmn" }')).toBe(true);
+  });
+  it("ignoriert andere JSON-Dateien", () => {
+    expect(isAtlasDescriptor('{ "prefix": "bpmn" }')).toBe(false);
   });
 });
 
