@@ -19,4 +19,7 @@ export {
   atlasPackages,
   ATLAS_NAMESPACE,
 } from "./atlas";
+export { createBpmnModeler } from "./bpmn-modeler";
+export type { BpmnModeler } from "./bpmn-modeler";
+export { bpmnRendererModule, BpmnRenderer } from "./renderer";
 export { processSample, processWithAtlas } from "./fixtures";

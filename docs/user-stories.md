@@ -26,7 +26,7 @@ Stories ab" ist damit ein Check, keine Behauptung.
 | US-KIT-01 | Als Modellierer bediene ich beide Modeler mit identischer Palette, Context-Pad, Selektion und Undo (einheitliches Look-and-Feel). | modeler-kit (B) | 3 | aktiv | `e2e/modeler-kit.spec.ts` |
 | US-DMN-01 | Als Fachautor erstelle, lade und speichere ich DMN-1.5-Entscheidungen verlustfrei (Round-Trip). | modeler-dmn (B) | 4 | aktiv | `e2e/modeler-dmn.spec.ts` |
 | US-DMN-02 | Als temis-Nutzer verwende ich denselben DMN-1.5-Descriptor in Modeler und Engine (eine Wahrheit). | modeler-dmn ↔ temis | 4 | geplant | — |
-| US-BPMN-01 | Als Modellierer speichere ich BPMN, das ein Fremdwerkzeug schemavalide und mit vollständigem Layout öffnet. | modeler-bpmn (B) | 5 | geplant | — |
+| US-BPMN-01 | Als Modellierer speichere ich BPMN, das ein Fremdwerkzeug schemavalide und mit vollständigem Layout öffnet. | modeler-bpmn (B) | 5 | aktiv | `e2e/modeler-bpmn.spec.ts` (+ `xsd.test.ts`) |
 | US-BPMN-02 | Als atlas-Autor hinterlege ich Ausführungssemantik in extensionElements, ohne die Standardkonformität zu brechen. | modeler-bpmn ↔ atlas | 5 | geplant | — |
 | US-BPMN-03 | Als Verwaltungs-Modellierer aktiviere ich das eCH-0158-Profil und sehe Konventionshinweise — niemals als Speicher-Blockade. | modeler-bpmn (B) | 5 | geplant | — |
 | US-VIEW-01 | Als Operate-Nutzer sehe ich ein read-only-Diagramm mit Overlays, ohne das Modell zu verändern. | viewer (B) | 6 | geplant | — |

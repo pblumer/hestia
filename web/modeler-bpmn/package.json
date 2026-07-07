@@ -13,6 +13,7 @@
   "dependencies": {
     "@hestia/atlas-contract": "workspace:*",
     "@hestia/modeler-kit": "workspace:*",
+    "diagram-js": "^15.19.0",
     "moddle": "^8.1.0",
     "moddle-xml": "^12.0.0"
   }
