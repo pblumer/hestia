@@ -17,6 +17,7 @@
     "apps/*/src",
     "contracts/*/*.ts",
     "tokens/tokens.ts",
+    "types/**/*.d.ts",
     "tools/**/*.mjs"
   ]
 }

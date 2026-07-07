@@ -30,6 +30,10 @@ jobs:
       - name: Install web deps
         run: pnpm install --frozen-lockfile
 
+      # xmllint für die BPMN-XSD-Validierung (INV-B1).
+      - name: Install xmllint
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
       # INV-H2: generierte Tokens dürfen nicht von der SSOT abweichen.
       - name: Token-Drift (INV-H2)
         run: |

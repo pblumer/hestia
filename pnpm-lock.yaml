@@ -57,6 +57,12 @@ importers:
       '@hestia/modeler-kit':
         specifier: workspace:*
         version: link:../modeler-kit
+      moddle:
+        specifier: ^8.1.0
+        version: 8.1.0
+      moddle-xml:
+        specifier: ^12.0.0
+        version: 12.0.0(moddle@8.1.0)
 
   web/modeler-dmn:
     dependencies:
