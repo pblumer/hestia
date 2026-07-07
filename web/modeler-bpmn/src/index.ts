@@ -19,7 +19,7 @@ export {
   atlasPackages,
   ATLAS_NAMESPACE,
 } from "./atlas";
-export { createBpmnModeler } from "./bpmn-modeler";
+export { createBpmnModeler, importBpmnDiagram } from "./bpmn-modeler";
 export type { BpmnModeler } from "./bpmn-modeler";
 export { bpmnRendererModule, BpmnRenderer } from "./renderer";
 export { lint, lintMechanic, ECH_0158_RULES } from "./lint";

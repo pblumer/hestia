@@ -5,6 +5,7 @@ import {
   isForbiddenModelerImport,
   isProjectSpecificGoImport,
   isGoAuthImport,
+  isBaseRendererImport,
   isDmnModelDescriptor,
   isAtlasDescriptor,
   isWebToGoImport,
@@ -62,6 +63,15 @@ describe("INV-M3: DMN-Descriptor nur in contracts/", () => {
   it("ignoriert andere JSON-Dateien", () => {
     expect(isDmnModelDescriptor('{ "name": "irgendwas" }')).toBe(false);
     expect(isDmnModelDescriptor('{ "prefix": "dmndi" }')).toBe(false);
+  });
+});
+
+describe("INV-O1: Viewer ohne eigenen Renderer", () => {
+  it("erkennt BaseRenderer-Import", () => {
+    expect(isBaseRendererImport("diagram-js/lib/draw/BaseRenderer")).toBe(true);
+  });
+  it("lässt andere Imports durch", () => {
+    expect(isBaseRendererImport("diagram-js/lib/features/overlays")).toBe(false);
   });
 });
 

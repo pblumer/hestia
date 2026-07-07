@@ -22,6 +22,7 @@
     "@hestia/modeler-dmn": "workspace:*",
     "@hestia/modeler-kit": "workspace:*",
     "@hestia/tokens": "workspace:*",
+    "@hestia/viewer": "workspace:*",
     "@playwright/test": "1.56.0",
     "@types/node": "^22.10.0",
     "dependency-cruiser": "^16.9.0",

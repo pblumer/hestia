@@ -75,6 +75,12 @@ export function isGoAuthImport(spec) {
   return spec.includes("/go/auth");
 }
 
+/** INV-O1: eigener diagram-js-Renderer (BaseRenderer)? Der Viewer darf keinen
+ *  zweiten Renderer definieren — er nutzt den der Modeler. */
+export function isBaseRendererImport(spec) {
+  return spec.includes("draw/BaseRenderer");
+}
+
 const DMN_MODEL_NS = "https://www.omg.org/spec/DMN/20240513/MODEL/";
 /** INV-M3: eine DMN-Moddle-Descriptor-Datei (nur in contracts/ erlaubt)? */
 export function isDmnModelDescriptor(jsonText) {
@@ -109,6 +115,13 @@ export function runChecks(root = process.cwd()) {
         if (isForbiddenModelerImport(spec)) add("INV-M1", f, `Direktimport '${spec}'`);
         if (isWebToGoImport(spec)) add("INV-H1", f, `web importiert go '${spec}'`);
       }
+    }
+  }
+
+  // INV-O1: der Viewer definiert keinen eigenen Renderer (kein BaseRenderer).
+  for (const f of walk(join(root, "web", "viewer"), JS_EXTS)) {
+    for (const spec of importSpecifiers(readFileSync(f, "utf8"))) {
+      if (isBaseRendererImport(spec)) add("INV-O1", f, `Viewer mit eigenem Renderer '${spec}'`);
     }
   }
 

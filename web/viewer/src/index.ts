@@ -1,9 +1,10 @@
 // @hestia/viewer — read-only-Diagrammanzeige für Operate.
 //
-// INV-O1: nutzt DENSELBEN diagram-js-Renderer wie die Modeler (aus modeler-kit),
-//   nur mit deaktivierter Palette und Modeling-Kommandos — kein zweiter Renderer.
-// INV-O2: Token-Animation, Heatmaps und Instanz-Overlays liegen in einem eigenen
-//   Overlay-Layer und verändern das Modell nicht. Ausbau in Schritt 6.
-import { KIT_NAME } from "@hestia/modeler-kit";
+// INV-O1: nutzt DENSELBEN diagram-js-Renderer wie die Modeler (hereingereicht
+//   über additionalModules), nur ohne Editing-Module — kein zweiter Renderer.
+// INV-O2: Token-Animation, Heatmaps und Instanz-Overlays liegen im
+//   Overlay-Layer und verändern das zugrunde liegende Modell nicht.
+export const VIEWER = "@hestia/viewer";
 
-export const VIEWER = `read-only-viewer auf ${KIT_NAME}`;
+export { createViewer, viewerModules } from "./viewer";
+export type { Viewer, OverlayPosition } from "./viewer";

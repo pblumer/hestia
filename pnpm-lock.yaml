@@ -23,6 +23,9 @@ importers:
       '@hestia/tokens':
         specifier: workspace:*
         version: link:tokens
+      '@hestia/viewer':
+        specifier: workspace:*
+        version: link:web/viewer
       '@playwright/test':
         specifier: 1.56.0
         version: 1.56.0
@@ -107,6 +110,9 @@ importers:
       '@hestia/modeler-kit':
         specifier: workspace:*
         version: link:../modeler-kit
+      diagram-js:
+        specifier: ^15.19.0
+        version: 15.19.0
 
 packages:
 

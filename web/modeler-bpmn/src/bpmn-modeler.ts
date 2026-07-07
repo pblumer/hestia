@@ -24,7 +24,7 @@ export function createBpmnModeler(options: { container: HTMLElement }): BpmnMode
   async function importXML(xml: string): Promise<void> {
     // atlas-Extensions werden mitgelesen und bleiben beim Speichern erhalten.
     definitions = await readBpmnXml(xml, { extraPackages: atlasPackages });
-    renderProcess(modeler, definitions);
+    importBpmnDiagram(modeler, definitions);
   }
 
   function saveXML(): string {
@@ -35,9 +35,12 @@ export function createBpmnModeler(options: { container: HTMLElement }): BpmnMode
   return { modeler, importXML, saveXML, getDefinitions: () => definitions };
 }
 
-function renderProcess(modeler: Modeler, definitions: any): void {
-  const canvas = modeler.get<any>("canvas");
-  const elementFactory = modeler.get<any>("elementFactory");
+// Baut die diagram-js-Elemente aus dem BPMNDI auf. Nimmt eine beliebige
+// diagram-js-Instanz (Modeler ODER read-only Viewer) — so nutzen beide DENSELBEN
+// Renderer und Import (INV-O1).
+export function importBpmnDiagram(target: Pick<Modeler, "get">, definitions: any): void {
+  const canvas = target.get<any>("canvas");
+  const elementFactory = target.get<any>("elementFactory");
 
   const root = elementFactory.createRoot({ id: "bpmn-root" });
   canvas.setRootElement(root);
