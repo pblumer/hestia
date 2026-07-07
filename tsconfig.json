@@ -12,5 +12,11 @@
     "types": ["node"],
     "lib": ["ES2022", "DOM", "DOM.Iterable"]
   },
-  "include": ["web/*/src", "apps/*/src", "tokens/tokens.ts", "tools/**/*.mjs"]
+  "include": [
+    "web/*/src",
+    "apps/*/src",
+    "contracts/*/*.ts",
+    "tokens/tokens.ts",
+    "tools/**/*.mjs"
+  ]
 }

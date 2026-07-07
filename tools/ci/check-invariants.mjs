@@ -75,6 +75,12 @@ export function isGoAuthImport(spec) {
   return spec.includes("/go/auth");
 }
 
+const DMN_MODEL_NS = "https://www.omg.org/spec/DMN/20240513/MODEL/";
+/** INV-M3: eine DMN-Moddle-Descriptor-Datei (nur in contracts/ erlaubt)? */
+export function isDmnModelDescriptor(jsonText) {
+  return jsonText.includes(DMN_MODEL_NS) && /"prefix"\s*:\s*"dmn"/.test(jsonText);
+}
+
 /** INV-H1: verweist ein web/apps-Specifier in die go/-Welt (außer Tokens)? */
 export function isWebToGoImport(spec) {
   if (spec === "@hestia/tokens" || spec.startsWith("@hestia/tokens/")) return false;
@@ -109,6 +115,15 @@ export function runChecks(root = process.cwd()) {
         for (const dep of Object.keys(pkg[field] || {})) {
           if (dep === "bpmn-js" || dep === "dmn-js") add("INV-M1", f, `Dependency '${dep}'`);
         }
+      }
+    }
+  }
+
+  // INV-M3: der DMN-Descriptor existiert nur in contracts/ (keine Divergenz)
+  for (const base of ["web", "apps", "go"]) {
+    for (const f of walk(join(root, base), [".json"])) {
+      if (isDmnModelDescriptor(readFileSync(f, "utf8"))) {
+        add("INV-M3", f, "DMN-Descriptor außerhalb contracts/ (Divergenzgefahr)");
       }
     }
   }

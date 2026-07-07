@@ -2,5 +2,6 @@
 # go/ ist bewusst NICHT Teil dieses Workspace (eigener Go-Workspace, INV-H1).
 packages:
   - "tokens"
+  - "contracts/*"
   - "web/*"
   - "apps/*"

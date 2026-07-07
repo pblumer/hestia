@@ -48,6 +48,8 @@ importers:
         specifier: ^3.0.0
         version: 3.2.7(@types/node@22.20.0)(lightningcss@1.32.0)
 
+  contracts/dmn: {}
+
   tokens: {}
 
   web/modeler-bpmn:
@@ -58,6 +60,9 @@ importers:
 
   web/modeler-dmn:
     dependencies:
+      '@hestia/dmn-contract':
+        specifier: workspace:*
+        version: link:../../contracts/dmn
       '@hestia/modeler-kit':
         specifier: workspace:*
         version: link:../modeler-kit

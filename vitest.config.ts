@@ -5,6 +5,7 @@ export default defineConfig({
     include: [
       "web/**/*.test.ts",
       "apps/**/*.test.ts",
+      "contracts/**/*.test.ts",
       "tokens/**/*.test.mjs",
       "tools/**/*.test.mjs",
     ],

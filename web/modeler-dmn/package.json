@@ -11,6 +11,7 @@
     "build": "echo '@hestia/modeler-dmn: Ausbau in Schritt 4'"
   },
   "dependencies": {
+    "@hestia/dmn-contract": "workspace:*",
     "@hestia/modeler-kit": "workspace:*",
     "diagram-js": "^15.19.0",
     "moddle": "^8.1.0",

@@ -5,6 +5,7 @@ import {
   isForbiddenModelerImport,
   isProjectSpecificGoImport,
   isGoAuthImport,
+  isDmnModelDescriptor,
   isWebToGoImport,
   isGoToWebImport,
 } from "./check-invariants.mjs";
@@ -49,6 +50,17 @@ describe("INV-H3: go/components projektneutral", () => {
   it("lässt neutrale Imports durch", () => {
     expect(isProjectSpecificGoImport("github.com/pblumer/hestia/go/core")).toBe(false);
     expect(isProjectSpecificGoImport("fmt")).toBe(false);
+  });
+});
+
+describe("INV-M3: DMN-Descriptor nur in contracts/", () => {
+  it("erkennt einen DMN-MODEL-Descriptor", () => {
+    const desc = '{ "prefix": "dmn", "uri": "https://www.omg.org/spec/DMN/20240513/MODEL/" }';
+    expect(isDmnModelDescriptor(desc)).toBe(true);
+  });
+  it("ignoriert andere JSON-Dateien", () => {
+    expect(isDmnModelDescriptor('{ "name": "irgendwas" }')).toBe(false);
+    expect(isDmnModelDescriptor('{ "prefix": "dmndi" }')).toBe(false);
   });
 });
 

@@ -3,22 +3,11 @@
 import { Moddle } from "moddle";
 import { Reader, Writer } from "moddle-xml";
 
-import dmnDescriptor from "./descriptor/dmn.json";
-import dcDescriptor from "./descriptor/dc.json";
-import diDescriptor from "./descriptor/di.json";
-import dmndiDescriptor from "./descriptor/dmndi.json";
+// Die DMN-1.5-Descriptoren stammen aus der EINEN Quelle @hestia/dmn-contract
+// (SSOT mit temis, INV-M3) — keine lokale Kopie, damit nichts divergieren kann.
+import { dmnDescriptors, DMN_NAMESPACE } from "@hestia/dmn-contract";
 
-// Die DMN-1.5-Descriptoren als exportierbares, geteiltes Artefakt (INV-M3):
-// dieselbe Definition nutzen Modeler UND temis-Engine.
-export const dmnDescriptors = {
-  dmn: dmnDescriptor,
-  dc: dcDescriptor,
-  di: diDescriptor,
-  dmndi: dmndiDescriptor,
-} as const;
-
-/** Der DMN-1.5-MODEL-Namespace, den dieser Descriptor definiert. */
-export const DMN_NAMESPACE = dmnDescriptor.uri;
+export { dmnDescriptors, DMN_NAMESPACE };
 
 // moddle-Elemente sind dynamisch typisiert; wir kapseln sie schmal.
 export interface DmnModdleElement {
@@ -28,10 +17,10 @@ export interface DmnModdleElement {
 }
 
 const PACKAGES = [
-  dmnDescriptor,
-  dcDescriptor,
-  diDescriptor,
-  dmndiDescriptor,
+  dmnDescriptors.dmn,
+  dmnDescriptors.dc,
+  dmnDescriptors.di,
+  dmnDescriptors.dmndi,
 ] as unknown as ConstructorParameters<typeof Moddle>[0];
 
 /** Erzeugt eine Moddle-Instanz mit den DMN-1.5-Descriptoren. */

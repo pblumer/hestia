@@ -1,0 +1,15 @@
+{
+  "name": "@hestia/dmn-contract",
+  "version": "1.5.0",
+  "private": true,
+  "type": "module",
+  "description": "DMN-1.5-Moddle-Descriptor als geteilte SSOT zwischen modeler-dmn und der temis-Engine (INV-M3). Die einzige Definition dieses Schemas.",
+  "exports": {
+    ".": "./index.ts",
+    "./manifest.json": "./manifest.json",
+    "./dmn.json": "./dmn.json",
+    "./dc.json": "./dc.json",
+    "./di.json": "./di.json",
+    "./dmndi.json": "./dmndi.json"
+  }
+}
