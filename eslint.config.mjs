@@ -39,6 +39,10 @@ export default tseslint.config(
         HTMLElement: "readonly",
       },
     },
+    rules: {
+      // In Browser-Fixtures/Hooks gegen untypisierte diagram-js-Services ist any pragmatisch.
+      "@typescript-eslint/no-explicit-any": "off",
+    },
   },
   {
     files: ["web/**/*.ts", "apps/**/*.ts"],

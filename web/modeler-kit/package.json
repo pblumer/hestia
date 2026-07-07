@@ -11,6 +11,7 @@
     "build": "echo '@hestia/modeler-kit: Ausbau in Schritt 3'"
   },
   "dependencies": {
-    "@hestia/tokens": "workspace:*"
+    "@hestia/tokens": "workspace:*",
+    "diagram-js": "^15.19.0"
   }
 }

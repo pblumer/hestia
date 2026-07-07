@@ -23,7 +23,7 @@ Stories ab" ist damit ein Check, keine Behauptung.
 |----|-------|----------------|---------|--------|-----|
 | US-TOK-01 | Als Nutzer sehe ich eine konsistente Oberfläche aus einer Token-Quelle und kann den Hell-/Dunkel-Modus explizit wählen. | Tokens (A+B) | 2 | aktiv | `e2e/tokens.spec.ts` |
 | US-TOK-02 | Als Nutzer erhalte ich automatisch den zur Systemeinstellung passenden Hell-/Dunkel-Modus. | Tokens (A+B) | 2 | aktiv | `e2e/tokens.spec.ts` |
-| US-KIT-01 | Als Modellierer bediene ich beide Modeler mit identischer Palette, Context-Pad, Selektion und Undo (einheitliches Look-and-Feel). | modeler-kit (B) | 3 | geplant | — |
+| US-KIT-01 | Als Modellierer bediene ich beide Modeler mit identischer Palette, Context-Pad, Selektion und Undo (einheitliches Look-and-Feel). | modeler-kit (B) | 3 | aktiv | `e2e/modeler-kit.spec.ts` |
 | US-DMN-01 | Als Fachautor erstelle, lade und speichere ich DMN-1.5-Entscheidungen verlustfrei (Round-Trip). | modeler-dmn (B) | 4 | geplant | — |
 | US-DMN-02 | Als temis-Nutzer verwende ich denselben DMN-1.5-Descriptor in Modeler und Engine (eine Wahrheit). | modeler-dmn ↔ temis | 4 | geplant | — |
 | US-BPMN-01 | Als Modellierer speichere ich BPMN, das ein Fremdwerkzeug schemavalide und mit vollständigem Layout öffnet. | modeler-bpmn (B) | 5 | geplant | — |

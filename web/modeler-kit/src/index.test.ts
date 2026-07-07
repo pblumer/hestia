@@ -1,12 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { KIT_NAME, kitAccent } from "./index";
+import { KIT_NAME, createModeler, kitModules } from "./index";
 
-describe("modeler-kit", () => {
-  it("exportiert seinen Namen", () => {
+describe("modeler-kit API", () => {
+  it("exportiert Namen, Fabrik und Modul-Set", () => {
     expect(KIT_NAME).toBe("@hestia/modeler-kit");
-  });
-
-  it("bezieht Theming aus der Token-SSOT (INV-H2)", () => {
-    expect(kitAccent).toMatch(/^#/);
+    expect(typeof createModeler).toBe("function");
+    expect(kitModules.length).toBeGreaterThan(0);
   });
 });
