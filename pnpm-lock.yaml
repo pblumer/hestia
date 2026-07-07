@@ -11,6 +11,9 @@ importers:
       '@eslint/js':
         specifier: ^9.17.0
         version: 9.39.4
+      '@hestia/modeler-dmn':
+        specifier: workspace:*
+        version: link:web/modeler-dmn
       '@hestia/modeler-kit':
         specifier: workspace:*
         version: link:web/modeler-kit
@@ -58,6 +61,9 @@ importers:
       '@hestia/modeler-kit':
         specifier: workspace:*
         version: link:../modeler-kit
+      diagram-js:
+        specifier: ^15.19.0
+        version: 15.19.0
       moddle:
         specifier: ^8.1.0
         version: 8.1.0

@@ -11,4 +11,7 @@ export {
   DMN_NAMESPACE,
 } from "./moddle";
 export type { DmnModdleElement } from "./moddle";
+export { createDmnModeler } from "./dmn-modeler";
+export type { DmnModeler } from "./dmn-modeler";
+export { dmnRendererModule, DmnRenderer } from "./renderer";
 export { rabattDmn } from "./fixtures";
