@@ -70,6 +70,11 @@ export function isProjectSpecificGoImport(spec) {
   return spec.split("/").some((seg) => PROJECT_PKGS.includes(seg));
 }
 
+/** INV-U3: importiert das Auth-Modul? go/components darf das nicht. */
+export function isGoAuthImport(spec) {
+  return spec.includes("/go/auth");
+}
+
 /** INV-H1: verweist ein web/apps-Specifier in die go/-Welt (außer Tokens)? */
 export function isWebToGoImport(spec) {
   if (spec === "@hestia/tokens" || spec.startsWith("@hestia/tokens/")) return false;
@@ -115,11 +120,12 @@ export function runChecks(root = process.cwd()) {
     }
   }
 
-  // INV-H3: go/components ohne projektspezifische Imports
+  // INV-H3/U3: go/components ohne projektspezifische und ohne Auth-Imports
   for (const f of walk(join(root, "go", "components"), [".go"])) {
     for (const spec of goImports(readFileSync(f, "utf8"))) {
       if (isProjectSpecificGoImport(spec))
         add("INV-H3", f, `components importiert projektspezifisch '${spec}'`);
+      if (isGoAuthImport(spec)) add("INV-U3", f, `components importiert go/auth '${spec}'`);
     }
   }
 

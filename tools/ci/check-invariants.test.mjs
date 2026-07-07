@@ -4,6 +4,7 @@ import {
   goImports,
   isForbiddenModelerImport,
   isProjectSpecificGoImport,
+  isGoAuthImport,
   isWebToGoImport,
   isGoToWebImport,
 } from "./check-invariants.mjs";
@@ -48,6 +49,16 @@ describe("INV-H3: go/components projektneutral", () => {
   it("lässt neutrale Imports durch", () => {
     expect(isProjectSpecificGoImport("github.com/pblumer/hestia/go/core")).toBe(false);
     expect(isProjectSpecificGoImport("fmt")).toBe(false);
+  });
+});
+
+describe("INV-U3: go/components importiert go/auth nicht", () => {
+  it("erkennt Auth-Imports", () => {
+    expect(isGoAuthImport("github.com/pblumer/hestia/go/auth")).toBe(true);
+    expect(isGoAuthImport("github.com/pblumer/hestia/go/auth/authtest")).toBe(true);
+  });
+  it("lässt andere Module durch", () => {
+    expect(isGoAuthImport("github.com/pblumer/hestia/go/core")).toBe(false);
   });
 });
 

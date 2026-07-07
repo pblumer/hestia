@@ -2,7 +2,7 @@
 SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
-GO_MODULES := core components adapters
+GO_MODULES := core components adapters auth
 
 .PHONY: help setup tokens build build-go build-web lint lint-go lint-web lint-dep \
         check-invariants check-stories check-test-presence test test-go test-web \
