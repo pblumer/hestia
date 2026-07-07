@@ -5,7 +5,7 @@ SHELL := /bin/bash
 GO_MODULES := core components adapters
 
 .PHONY: help setup tokens build build-go build-web lint lint-go lint-web lint-dep \
-        check-invariants test test-go test-web dev ci clean
+        check-invariants check-stories test test-go test-web e2e dev ci clean
 
 help: ## Diese Übersicht
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -26,7 +26,7 @@ build-go: ## Go-Module bauen
 build-web: tokens ## Web-Pakete bauen (nach Token-Generierung)
 	pnpm -r run build
 
-lint: lint-go lint-web check-invariants ## Alle Lints + Invarianten-Checks
+lint: lint-go lint-web check-invariants check-stories ## Alle Lints + Invarianten- & Story-Checks
 
 lint-go: ## gofmt + go vet (+ golangci-lint falls vorhanden)
 	@test -z "$$(gofmt -l go)" || { echo "gofmt-Verstöße:"; gofmt -l go; exit 1; }
@@ -45,13 +45,19 @@ lint-dep: ## dependency-cruiser (INV-M1/H1 auf Graph-Ebene; ab Schritt 3 scharf)
 check-invariants: ## Mechanische Invarianten-Checks (INV-H1, INV-H3, INV-M1)
 	node tools/ci/check-invariants.mjs
 
-test: test-go test-web ## Alle Tests
+check-stories: ## E2E-Abdeckung: jede aktive User Story hat einen E2E-Test
+	node tools/ci/check-user-stories.mjs
+
+test: test-go test-web ## Alle Tests (ohne E2E; siehe `make e2e`)
 
 test-go: ## Go-Tests
 	@set -e; for m in $(GO_MODULES); do (cd go/$$m && go test ./...); done
 
 test-web: ## Web-/Tooling-Tests (vitest)
 	pnpm exec vitest run
+
+e2e: tokens ## Playwright-E2E (deckt aktive User Stories ab)
+	pnpm exec playwright test
 
 dev: ## Dev-Modus (Platzhalter bis apps/ existieren, Schritt 8/9)
 	@echo "dev: noch keine App – kommt mit apps/operate (Schritt 8) und apps/examples (Schritt 9)"
@@ -62,6 +68,7 @@ ci: ## Vollständige CI-Pipeline lokal: Token-Drift + Lint + Test + Build
 		|| { echo "tokens/ drift – 'make tokens' ausführen und committen (INV-H2)"; exit 1; }
 	@$(MAKE) lint
 	@$(MAKE) test
+	@$(MAKE) e2e
 	@$(MAKE) build
 
 clean: ## Build-Artefakte entfernen

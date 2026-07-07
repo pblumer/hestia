@@ -29,6 +29,18 @@ export default tseslint.config(
     },
   },
   {
+    // Playwright-E2E: Browser-Globals in page.evaluate-Callbacks erlauben.
+    files: ["e2e/**/*.ts"],
+    languageOptions: {
+      globals: {
+        document: "readonly",
+        window: "readonly",
+        getComputedStyle: "readonly",
+        HTMLElement: "readonly",
+      },
+    },
+  },
+  {
     files: ["web/**/*.ts", "apps/**/*.ts"],
     rules: {
       "no-restricted-imports": [
