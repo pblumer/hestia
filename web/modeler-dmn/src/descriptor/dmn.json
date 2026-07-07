@@ -1,0 +1,120 @@
+{
+  "name": "DMN",
+  "uri": "https://www.omg.org/spec/DMN/20240513/MODEL/",
+  "prefix": "dmn",
+  "xml": { "tagAlias": "lowerCase" },
+  "types": [
+    {
+      "name": "DMNElement",
+      "isAbstract": true,
+      "properties": [
+        { "name": "id", "isAttr": true, "type": "String", "isId": true },
+        { "name": "description", "type": "String", "xml": { "serialize": "property" } }
+      ]
+    },
+    {
+      "name": "NamedElement",
+      "isAbstract": true,
+      "superClass": ["DMNElement"],
+      "properties": [{ "name": "name", "isAttr": true, "type": "String" }]
+    },
+    {
+      "name": "Definitions",
+      "isRoot": true,
+      "superClass": ["NamedElement"],
+      "properties": [
+        { "name": "namespace", "isAttr": true, "type": "String" },
+        { "name": "expressionLanguage", "isAttr": true, "type": "String" },
+        { "name": "exporter", "isAttr": true, "type": "String" },
+        { "name": "exporterVersion", "isAttr": true, "type": "String" },
+        { "name": "drgElement", "type": "DRGElement", "isMany": true },
+        { "name": "dmnDI", "type": "dmndi:DMNDI" }
+      ]
+    },
+    { "name": "DRGElement", "isAbstract": true, "superClass": ["NamedElement"] },
+    {
+      "name": "Decision",
+      "superClass": ["DRGElement"],
+      "properties": [
+        { "name": "question", "type": "String", "xml": { "serialize": "property" } },
+        { "name": "allowedAnswers", "type": "String", "xml": { "serialize": "property" } },
+        { "name": "informationRequirement", "type": "InformationRequirement", "isMany": true },
+        { "name": "decisionLogic", "type": "Expression" }
+      ]
+    },
+    { "name": "InputData", "superClass": ["DRGElement"] },
+    {
+      "name": "InformationRequirement",
+      "superClass": ["DMNElement"],
+      "properties": [
+        { "name": "requiredDecision", "type": "DMNElementReference", "xml": { "serialize": "property" } },
+        { "name": "requiredInput", "type": "DMNElementReference", "xml": { "serialize": "property" } }
+      ]
+    },
+    {
+      "name": "DMNElementReference",
+      "properties": [{ "name": "href", "isAttr": true, "type": "String" }]
+    },
+    {
+      "name": "Expression",
+      "isAbstract": true,
+      "superClass": ["DMNElement"],
+      "properties": [{ "name": "typeRef", "isAttr": true, "type": "String" }]
+    },
+    {
+      "name": "LiteralExpression",
+      "superClass": ["Expression"],
+      "properties": [
+        { "name": "text", "type": "String" },
+        { "name": "expressionLanguage", "isAttr": true, "type": "String" }
+      ]
+    },
+    {
+      "name": "UnaryTests",
+      "superClass": ["Expression"],
+      "properties": [
+        { "name": "text", "type": "String" },
+        { "name": "expressionLanguage", "isAttr": true, "type": "String" }
+      ]
+    },
+    {
+      "name": "DecisionTable",
+      "superClass": ["Expression"],
+      "properties": [
+        { "name": "input", "type": "InputClause", "isMany": true, "xml": { "serialize": "property" } },
+        { "name": "output", "type": "OutputClause", "isMany": true, "xml": { "serialize": "property" } },
+        { "name": "rule", "type": "DecisionRule", "isMany": true, "xml": { "serialize": "property" } },
+        { "name": "hitPolicy", "isAttr": true, "type": "String", "default": "UNIQUE" },
+        { "name": "aggregation", "isAttr": true, "type": "String" },
+        { "name": "preferredOrientation", "isAttr": true, "type": "String" },
+        { "name": "outputLabel", "isAttr": true, "type": "String" }
+      ]
+    },
+    {
+      "name": "InputClause",
+      "superClass": ["DMNElement"],
+      "properties": [
+        { "name": "inputExpression", "type": "LiteralExpression", "xml": { "serialize": "property" } },
+        { "name": "inputValues", "type": "UnaryTests", "xml": { "serialize": "property" } }
+      ]
+    },
+    {
+      "name": "OutputClause",
+      "superClass": ["DMNElement"],
+      "properties": [
+        { "name": "name", "isAttr": true, "type": "String" },
+        { "name": "typeRef", "isAttr": true, "type": "String" },
+        { "name": "outputValues", "type": "UnaryTests", "xml": { "serialize": "property" } },
+        { "name": "defaultOutputEntry", "type": "LiteralExpression", "xml": { "serialize": "property" } }
+      ]
+    },
+    {
+      "name": "DecisionRule",
+      "superClass": ["DMNElement"],
+      "properties": [
+        { "name": "inputEntry", "type": "UnaryTests", "isMany": true, "xml": { "serialize": "property" } },
+        { "name": "outputEntry", "type": "LiteralExpression", "isMany": true, "xml": { "serialize": "property" } }
+      ]
+    }
+  ]
+}

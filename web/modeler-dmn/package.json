@@ -11,6 +11,8 @@
     "build": "echo '@hestia/modeler-dmn: Ausbau in Schritt 4'"
   },
   "dependencies": {
-    "@hestia/modeler-kit": "workspace:*"
+    "@hestia/modeler-kit": "workspace:*",
+    "moddle": "^8.1.0",
+    "moddle-xml": "^12.0.0"
   }
 }

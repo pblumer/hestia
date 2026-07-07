@@ -1,0 +1,30 @@
+{
+  "name": "DC",
+  "uri": "https://www.omg.org/spec/DMN/20180521/DC/",
+  "prefix": "dc",
+  "types": [
+    {
+      "name": "Bounds",
+      "properties": [
+        { "name": "x", "isAttr": true, "type": "Real" },
+        { "name": "y", "isAttr": true, "type": "Real" },
+        { "name": "width", "isAttr": true, "type": "Real" },
+        { "name": "height", "isAttr": true, "type": "Real" }
+      ]
+    },
+    {
+      "name": "Point",
+      "properties": [
+        { "name": "x", "isAttr": true, "type": "Real" },
+        { "name": "y", "isAttr": true, "type": "Real" }
+      ]
+    },
+    {
+      "name": "Dimension",
+      "properties": [
+        { "name": "width", "isAttr": true, "type": "Real" },
+        { "name": "height", "isAttr": true, "type": "Real" }
+      ]
+    }
+  ]
+}

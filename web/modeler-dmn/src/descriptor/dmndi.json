@@ -1,0 +1,28 @@
+{
+  "name": "DMNDI",
+  "uri": "https://www.omg.org/spec/DMN/20240513/DMNDI/",
+  "prefix": "dmndi",
+  "types": [
+    {
+      "name": "DMNDI",
+      "properties": [{ "name": "diagrams", "type": "DMNDiagram", "isMany": true }]
+    },
+    {
+      "name": "DMNDiagram",
+      "superClass": ["di:Diagram"],
+      "properties": [
+        { "name": "diagramElements", "type": "DMNDiagramElement", "isMany": true }
+      ]
+    },
+    {
+      "name": "DMNDiagramElement",
+      "isAbstract": true,
+      "superClass": ["di:DiagramElement"],
+      "properties": [
+        { "name": "dmnElementRef", "isAttr": true, "isReference": true, "type": "dmn:DMNElement" }
+      ]
+    },
+    { "name": "DMNShape", "superClass": ["di:Shape", "DMNDiagramElement"] },
+    { "name": "DMNEdge", "superClass": ["di:Edge", "DMNDiagramElement"] }
+  ]
+}
