@@ -10,8 +10,19 @@ nur über **Design-Tokens**:
 - **Klasse B** — IDE-artige Modeler (BPMN, DMN): TypeScript auf `diagram-js` + vite.
 
 Verbindlich sind [`docs/hestia-concept.md`](docs/hestia-concept.md),
-[`docs/invariants.md`](docs/invariants.md) und die ADRs unter
-[`docs/adr/`](docs/adr/).
+[`docs/invariants.md`](docs/invariants.md), die ADRs unter
+[`docs/adr/`](docs/adr/) sowie die
+[Arbeitsweise](docs/working-agreement.md) (**TDD**) und die
+[User-Story-Registry](docs/user-stories.md).
+
+## Arbeitsweise: TDD
+
+Entwicklung erfolgt **testgetrieben (red → green → refactor)** — Test zuerst,
+dann Code. Drei Ebenen: Unit (`vitest`/`go test`), E2E (Playwright, pro User
+Story) und die Invarianten-Checks als ausführbare Spezifikation. Details in
+[`docs/working-agreement.md`](docs/working-agreement.md); mechanisch geprüft
+durch `check-test-presence` (kein Quellmodul ohne Tests) und `check-user-stories`
+(jede aktive Story hat E2E).
 
 ## Verzeichnis-Layout
 

@@ -5,7 +5,8 @@ SHELL := /bin/bash
 GO_MODULES := core components adapters
 
 .PHONY: help setup tokens build build-go build-web lint lint-go lint-web lint-dep \
-        check-invariants check-stories test test-go test-web e2e dev ci clean
+        check-invariants check-stories check-test-presence test test-go test-web \
+        e2e dev ci clean
 
 help: ## Diese Übersicht
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -26,7 +27,7 @@ build-go: ## Go-Module bauen
 build-web: tokens ## Web-Pakete bauen (nach Token-Generierung)
 	pnpm -r run build
 
-lint: lint-go lint-web check-invariants check-stories ## Alle Lints + Invarianten- & Story-Checks
+lint: lint-go lint-web check-invariants check-stories check-test-presence ## Alle Lints + mechanische Checks
 
 lint-go: ## gofmt + go vet (+ golangci-lint falls vorhanden)
 	@test -z "$$(gofmt -l go)" || { echo "gofmt-Verstöße:"; gofmt -l go; exit 1; }
@@ -47,6 +48,9 @@ check-invariants: ## Mechanische Invarianten-Checks (INV-H1, INV-H3, INV-M1)
 
 check-stories: ## E2E-Abdeckung: jede aktive User Story hat einen E2E-Test
 	node tools/ci/check-user-stories.mjs
+
+check-test-presence: ## TDD-Guard: kein Quellmodul ohne Tests (Prinzip 4)
+	node tools/ci/check-test-presence.mjs
 
 test: test-go test-web ## Alle Tests (ohne E2E; siehe `make e2e`)
 
