@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <title>modeler-bpmn — eCH-0158-Linter-Demo</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      #canvas {
+        position: absolute;
+        inset: 0;
+        background: var(--color-bg);
+      }
+      #violations {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 320px;
+        max-height: 100%;
+        overflow: auto;
+        padding: var(--space-3);
+        background: var(--color-surface);
+        border-left: 1px solid var(--color-border);
+        font-family: var(--text-family-sans);
+        font-size: var(--text-size-sm);
+        color: var(--color-fg);
+      }
+      .violation {
+        padding: var(--space-2);
+        border-radius: var(--radius-sm);
+        margin-bottom: var(--space-2);
+        background: var(--color-surface-raised);
+        border: 1px solid var(--color-border);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="canvas"></div>
+    <div id="violations"><strong>eCH-0158</strong></div>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

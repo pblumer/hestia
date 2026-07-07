@@ -28,7 +28,7 @@ Stories ab" ist damit ein Check, keine Behauptung.
 | US-DMN-02 | Als temis-Nutzer verwende ich denselben DMN-1.5-Descriptor in Modeler und Engine (eine Wahrheit). | modeler-dmn ↔ temis | 4 | geplant | — |
 | US-BPMN-01 | Als Modellierer speichere ich BPMN, das ein Fremdwerkzeug schemavalide und mit vollständigem Layout öffnet. | modeler-bpmn (B) | 5 | aktiv | `e2e/modeler-bpmn.spec.ts` (+ `xsd.test.ts`) |
 | US-BPMN-02 | Als atlas-Autor hinterlege ich Ausführungssemantik in extensionElements, ohne die Standardkonformität zu brechen. | modeler-bpmn ↔ atlas | 5 | geplant | — |
-| US-BPMN-03 | Als Verwaltungs-Modellierer aktiviere ich das eCH-0158-Profil und sehe Konventionshinweise — niemals als Speicher-Blockade. | modeler-bpmn (B) | 5 | geplant | — |
+| US-BPMN-03 | Als Verwaltungs-Modellierer aktiviere ich das eCH-0158-Profil und sehe Konventionshinweise — niemals als Speicher-Blockade. | modeler-bpmn (B) | 5 | aktiv | `e2e/modeler-bpmn-lint.spec.ts` (+ `lint/lint.test.ts`) |
 | US-VIEW-01 | Als Operate-Nutzer sehe ich ein read-only-Diagramm mit Overlays, ohne das Modell zu verändern. | viewer (B) | 6 | geplant | — |
 | US-COMP-01 | Als Admin bediene ich Tabelle, Formular, Modal und Timeline auch ohne JavaScript (sinnvoller Fallback). | go/components (A) | 7 | geplant | — |
 | US-OPS-01 | Als Operator sehe ich laufende Instanzen und Incidents (aus atlas/clio) samt Token-Animation im Diagramm. | apps/operate (A+B) | 8 | geplant | — |

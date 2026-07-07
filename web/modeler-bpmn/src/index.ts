@@ -22,4 +22,12 @@ export {
 export { createBpmnModeler } from "./bpmn-modeler";
 export type { BpmnModeler } from "./bpmn-modeler";
 export { bpmnRendererModule, BpmnRenderer } from "./renderer";
-export { processSample, processWithAtlas } from "./fixtures";
+export { lint, lintMechanic, ECH_0158_RULES } from "./lint";
+export type { Rule, Violation, Severity, Mode, LinterConfig } from "./lint";
+export {
+  processSample,
+  processWithAtlas,
+  lintCompliant,
+  lintNonCompliant,
+  lintWithIntermediate,
+} from "./fixtures";

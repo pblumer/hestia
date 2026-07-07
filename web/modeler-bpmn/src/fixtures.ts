@@ -40,6 +40,44 @@ export const processSample = `<?xml version="1.0" encoding="UTF-8"?>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>`;
 
+// --- eCH-0158-Linter-Fixtures (ohne DI; Konventionen liegen über dem Modell) --
+
+// Konventionskonform: Start -> benannte Aktivität -> Ende, je genau ein Fluss.
+export const lintCompliant = `<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" id="D" targetNamespace="n">
+  <bpmn:process id="Process_ok" name="Antrag bearbeiten" isExecutable="false">
+    <bpmn:startEvent id="S"><bpmn:outgoing>f1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:task id="T" name="Antrag pruefen"><bpmn:incoming>f1</bpmn:incoming><bpmn:outgoing>f2</bpmn:outgoing></bpmn:task>
+    <bpmn:endEvent id="E"><bpmn:incoming>f2</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="f1" sourceRef="S" targetRef="T" />
+    <bpmn:sequenceFlow id="f2" sourceRef="T" targetRef="E" />
+  </bpmn:process>
+</bpmn:definitions>`;
+
+// Verstößt gegen mehrere Regeln: Prozess ohne Bezeichnung (DIA-003), Aktivität
+// ohne Namen (ACT-005), Aktivität ohne Ausgang (ACT-002), kein Endereignis /
+// offenes Ende (EVT-002).
+export const lintNonCompliant = `<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" id="D" targetNamespace="n">
+  <bpmn:process id="Process_bad" isExecutable="false">
+    <bpmn:startEvent id="S"><bpmn:outgoing>f1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:task id="T"><bpmn:incoming>f1</bpmn:incoming></bpmn:task>
+    <bpmn:sequenceFlow id="f1" sourceRef="S" targetRef="T" />
+  </bpmn:process>
+</bpmn:definitions>`;
+
+// Enthält ein auslösendes Nachrichten-Zwischenereignis (EVT-005, in Analytic entschärft).
+export const lintWithIntermediate = `<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" id="D" targetNamespace="n">
+  <bpmn:process id="Process_msg" name="Nachricht senden" isExecutable="false">
+    <bpmn:startEvent id="S"><bpmn:outgoing>f1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:intermediateThrowEvent id="I" name="Nachricht senden"><bpmn:incoming>f1</bpmn:incoming><bpmn:outgoing>f2</bpmn:outgoing><bpmn:messageEventDefinition id="med" /></bpmn:intermediateThrowEvent>
+    <bpmn:endEvent id="E"><bpmn:incoming>f2</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="f1" sourceRef="S" targetRef="I" />
+    <bpmn:sequenceFlow id="f2" sourceRef="I" targetRef="E" />
+  </bpmn:process>
+</bpmn:definitions>`;
+
 // Wie processSample, aber die Aktivität trägt atlas-Ausführungssemantik in
 // extensionElements (Namespace http://hestia/atlas/bpmn). Dient dem INV-B3-Test.
 export const processWithAtlas = `<?xml version="1.0" encoding="UTF-8"?>
