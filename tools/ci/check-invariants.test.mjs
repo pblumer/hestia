@@ -1,0 +1,64 @@
+import { describe, it, expect } from "vitest";
+import {
+  importSpecifiers,
+  goImports,
+  isForbiddenModelerImport,
+  isProjectSpecificGoImport,
+  isWebToGoImport,
+  isGoToWebImport,
+} from "./check-invariants.mjs";
+
+describe("INV-M1: kein direkter bpmn-js/dmn-js-Import", () => {
+  it("erkennt verbotene Modeler-Imports", () => {
+    expect(isForbiddenModelerImport("bpmn-js")).toBe(true);
+    expect(isForbiddenModelerImport("bpmn-js/lib/Modeler")).toBe(true);
+    expect(isForbiddenModelerImport("dmn-js")).toBe(true);
+    expect(isForbiddenModelerImport("dmn-js/lib/Viewer")).toBe(true);
+  });
+  it("lässt erlaubte Fundament-Imports durch", () => {
+    expect(isForbiddenModelerImport("diagram-js")).toBe(false);
+    expect(isForbiddenModelerImport("@bpmn-io/properties-panel")).toBe(false);
+    expect(isForbiddenModelerImport("@hestia/modeler-kit")).toBe(false);
+    expect(isForbiddenModelerImport("bpmn-moddle")).toBe(false);
+  });
+});
+
+describe("Specifier-Extraktion", () => {
+  it("findet import/export/require", () => {
+    const specs = importSpecifiers(
+      `import x from "diagram-js";\nexport { y } from './y';\nconst z = require("bpmn-js");\nimport "@hestia/tokens";`,
+    );
+    expect(specs).toEqual(expect.arrayContaining(["diagram-js", "./y", "bpmn-js", "@hestia/tokens"]));
+  });
+  it("parst Go-Import-Blöcke und Einzelimports", () => {
+    expect(goImports(`import (\n\t"fmt"\n\t"github.com/pblumer/atlas/x"\n)`)).toContain(
+      "github.com/pblumer/atlas/x",
+    );
+    expect(goImports(`import "github.com/pblumer/hestia/go/core"`)).toContain(
+      "github.com/pblumer/hestia/go/core",
+    );
+  });
+});
+
+describe("INV-H3: go/components projektneutral", () => {
+  it("erkennt projektspezifische Imports", () => {
+    expect(isProjectSpecificGoImport("github.com/pblumer/temis/engine")).toBe(true);
+    expect(isProjectSpecificGoImport("github.com/pblumer/atlas")).toBe(true);
+  });
+  it("lässt neutrale Imports durch", () => {
+    expect(isProjectSpecificGoImport("github.com/pblumer/hestia/go/core")).toBe(false);
+    expect(isProjectSpecificGoImport("fmt")).toBe(false);
+  });
+});
+
+describe("INV-H1: Klassentrennung go <-> web (außer tokens)", () => {
+  it("erlaubt @hestia/tokens als einzige geteilte Quelle", () => {
+    expect(isWebToGoImport("@hestia/tokens")).toBe(false);
+    expect(isWebToGoImport("@hestia/tokens/tokens.css")).toBe(false);
+  });
+  it("erkennt web->go und go->web", () => {
+    expect(isWebToGoImport("../../go/core")).toBe(true);
+    expect(isGoToWebImport("github.com/pblumer/hestia/web/modeler-kit")).toBe(true);
+    expect(isGoToWebImport("github.com/pblumer/hestia/go/core")).toBe(false);
+  });
+});

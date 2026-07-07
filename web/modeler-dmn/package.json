@@ -1,0 +1,16 @@
+{
+  "name": "@hestia/modeler-dmn",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "DMN-1.5-Modeler: eigener Moddle-Descriptor (SSOT mit temis, INV-M3) + Renderer/Rules auf modeler-kit. Kein direkter dmn-js-Import (INV-M1).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "echo '@hestia/modeler-dmn: Ausbau in Schritt 4'"
+  },
+  "dependencies": {
+    "@hestia/modeler-kit": "workspace:*"
+  }
+}

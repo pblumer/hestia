@@ -1,0 +1,16 @@
+{
+  "name": "@hestia/viewer",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Read-only diagram-js-Viewer auf den modeler-kit-Renderern (EIN Renderer, INV-O1) + Overlay-Layer-API für Token-Animation/Heatmaps (INV-O2). Für Operate.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "echo '@hestia/viewer: Ausbau in Schritt 6'"
+  },
+  "dependencies": {
+    "@hestia/modeler-kit": "workspace:*"
+  }
+}

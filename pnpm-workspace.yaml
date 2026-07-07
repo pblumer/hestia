@@ -1,0 +1,6 @@
+# pnpm-Workspace der Klasse B (web/) + Apps + die geteilten Tokens.
+# go/ ist bewusst NICHT Teil dieses Workspace (eigener Go-Workspace, INV-H1).
+packages:
+  - "tokens"
+  - "web/*"
+  - "apps/*"

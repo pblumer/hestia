@@ -1,0 +1,28 @@
+{
+  "name": "@hestia/root",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "tokens": "node tokens/generate.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint:es": "eslint .",
+    "lint:dep": "depcruise web apps --config .dependency-cruiser.cjs",
+    "invariants": "node tools/ci/check-invariants.mjs",
+    "test": "vitest run",
+    "build": "pnpm -r run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@types/node": "^22.10.0",
+    "dependency-cruiser": "^16.9.0",
+    "eslint": "^9.17.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.19.0",
+    "vitest": "^3.0.0"
+  }
+}

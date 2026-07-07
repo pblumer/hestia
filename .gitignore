@@ -1,0 +1,17 @@
+# Node / pnpm
+node_modules/
+dist/
+*.tsbuildinfo
+.pnpm-store/
+
+# Go
+bin/
+*.out
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+
+# HINWEIS: tokens/tokens.css und tokens/tokens.ts sind generiert, aber bewusst
+# eingecheckt — der CI-Drift-Check (INV-H2) vergleicht sie gegen die Regenerierung.

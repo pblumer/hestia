@@ -1,0 +1,51 @@
+name: ci
+
+on:
+  push:
+    branches: [main, "claude/**"]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.x"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install web deps
+        run: pnpm install --frozen-lockfile
+
+      # INV-H2: generierte Tokens dürfen nicht von der SSOT abweichen.
+      - name: Token-Drift (INV-H2)
+        run: |
+          node tokens/generate.mjs
+          git diff --exit-code -- tokens/tokens.css tokens/tokens.ts \
+            || { echo "::error::tokens/ drift – 'make tokens' committen (INV-H2)"; exit 1; }
+
+      # INV-H1, INV-H3, INV-M1: mechanische Klassentrennung/Modulgrenzen.
+      - name: Invarianten (INV-H1/H3/M1)
+        run: node tools/ci/check-invariants.mjs
+
+      - name: Lint
+        run: make lint
+
+      - name: Test
+        run: make test
+
+      - name: Build
+        run: make build
