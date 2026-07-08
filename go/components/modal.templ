@@ -1,0 +1,22 @@
+package components
+
+// Modal ist JS-frei bedienbar: Öffnen/Schließen über Anker (:target). Ohne
+// JavaScript bleibt der Inhalt erreichbar; CSS blendet ihn als Overlay ein
+// (INV-A1). HTMX kann den Inhalt zusätzlich nachladen.
+templ Modal(id string, title string) {
+	<div id={ id } class="hestia-modal" role="dialog" aria-modal="true" aria-labelledby={ id + "-title" }>
+		<a class="hestia-modal-backdrop" href="#" aria-label="Schließen"></a>
+		<div class="hestia-modal-box">
+			<h2 id={ id + "-title" }>{ title }</h2>
+			<div class="hestia-modal-content">
+				{ children... }
+			</div>
+			<a class="hestia-modal-close" href="#">Schließen</a>
+		</div>
+	</div>
+}
+
+// ModalTrigger öffnet ein Modal per Anker (kein JavaScript nötig).
+templ ModalTrigger(id string, label string) {
+	<a class="hestia-modal-trigger" href={ templ.SafeURL("#" + id) }>{ label }</a>
+}

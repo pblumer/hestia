@@ -1,0 +1,35 @@
+package components
+
+// Table rendert eine Tabelle mit Server-Pagination. JS-frei bedienbar über
+// echte Links (href); HTMX (hx-get) ist nur progressive Verbesserung (INV-A1).
+templ Table(cols []Column, rows []Row, page Page, baseURL string) {
+	<div class="hestia-table-wrap">
+		<table class="hestia-table" role="table">
+			<thead>
+				<tr>
+					for _, c := range cols {
+						<th scope="col">{ c.Label }</th>
+					}
+				</tr>
+			</thead>
+			<tbody>
+				for _, row := range rows {
+					<tr>
+						for _, c := range cols {
+							<td>{ row[c.Key] }</td>
+						}
+					</tr>
+				}
+			</tbody>
+		</table>
+		<nav class="hestia-pagination" aria-label="Seiten">
+			if page.HasPrev() {
+				<a rel="prev" href={ templ.SafeURL(pageURL(baseURL, page.Prev())) } hx-get={ pageURL(baseURL, page.Prev()) } hx-target="closest .hestia-table-wrap">Zurück</a>
+			}
+			<span class="hestia-page-info">Seite { itoa(page.Number) } / { itoa(page.Pages()) }</span>
+			if page.HasNext() {
+				<a rel="next" href={ templ.SafeURL(pageURL(baseURL, page.Next())) } hx-get={ pageURL(baseURL, page.Next()) } hx-target="closest .hestia-table-wrap">Weiter</a>
+			}
+		</nav>
+	</div>
+}

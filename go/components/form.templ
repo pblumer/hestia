@@ -1,0 +1,20 @@
+package components
+
+// Form rendert ein Formular mit Validierungsfehlern. JS-freier Fallback:
+// normales POST; der Server validiert (Validate) und rendert bei Fehlern neu.
+templ Form(action string, fields []Field, values FormData, errors map[string]string) {
+	<form class="hestia-form" method="post" action={ templ.SafeURL(action) }>
+		for _, f := range fields {
+			<div class="hestia-field">
+				<label>
+					<span>{ f.Label }</span>
+					<input type={ f.Type } name={ f.Name } value={ values[f.Name] } required?={ f.Required }/>
+				</label>
+				if msg, ok := errors[f.Name]; ok {
+					<p class="hestia-error" role="alert">{ msg }</p>
+				}
+			</div>
+		}
+		<button type="submit">Speichern</button>
+	</form>
+}
