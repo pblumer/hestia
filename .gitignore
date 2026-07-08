@@ -21,3 +21,7 @@ bin/
 
 # HINWEIS: tokens/tokens.css und tokens/tokens.ts sind generiert, aber bewusst
 # eingecheckt — der CI-Drift-Check (INV-H2) vergleicht sie gegen die Regenerierung.
+
+# operate: gebaute Assets (Frontend-Bundle + kopierte Tokens)
+apps/operate/static/*
+!apps/operate/static/.gitkeep

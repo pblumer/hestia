@@ -28,7 +28,8 @@ templ InstanceDetailPage(inst adapters.Instance, events []components.TimelineEve
 		@nav()
 		<h1>Instanz { inst.ID }</h1>
 		<p>Prozess { inst.ProcessID } — Status { inst.State }</p>
-		<div id="diagram" data-instance={ inst.ID } data-process={ inst.ProcessID } data-events="/events"></div>
+		<link rel="stylesheet" href="/assets/operate.css"/>
+		<div id="diagram" data-instance={ inst.ID } data-process={ inst.ProcessID } data-events="/events" style="height:360px;border:1px solid var(--color-border);border-radius:var(--radius-md)"></div>
 		<script src="/assets/operate.js" type="module"></script>
 		<h2>Verlauf</h2>
 		@components.Timeline(events)

@@ -8,6 +8,7 @@ export default tseslint.config(
     ignores: [
       "**/node_modules/**",
       "**/dist/**",
+      "apps/**/static/**", // gebaute Frontend-Bundles
       "tokens/tokens.ts", // generiert (INV-H2)
     ],
   },
@@ -41,6 +42,22 @@ export default tseslint.config(
     },
     rules: {
       // In Browser-Fixtures/Hooks gegen untypisierte diagram-js-Services ist any pragmatisch.
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
+  {
+    // Operate-Frontend (Klasse B, im Browser): Browser-Globals + pragmatisches any.
+    files: ["apps/**/frontend/**/*.ts"],
+    languageOptions: {
+      globals: {
+        document: "readonly",
+        window: "readonly",
+        EventSource: "readonly",
+        MessageEvent: "readonly",
+        HTMLElement: "readonly",
+      },
+    },
+    rules: {
       "@typescript-eslint/no-explicit-any": "off",
     },
   },
