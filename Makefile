@@ -12,12 +12,17 @@ help: ## Diese Übersicht
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}'
 
+TEMPL_VERSION := v0.3.977
+
 setup: ## Toolchain installieren (templ, pnpm-Deps)
-	@command -v templ >/dev/null 2>&1 || go install github.com/a-h/templ/cmd/templ@latest
+	@command -v templ >/dev/null 2>&1 || go install github.com/a-h/templ/cmd/templ@$(TEMPL_VERSION)
 	pnpm install
 
 tokens: ## tokens.css + tokens.ts aus tokens.json generieren (INV-H2)
 	node tokens/generate.mjs
+
+templ: ## *_templ.go aus .templ generieren (Klasse A)
+	templ generate
 
 build: build-go build-web ## Alles bauen
 
@@ -66,10 +71,13 @@ e2e: tokens ## Playwright-E2E (deckt aktive User Stories ab)
 dev: ## Dev-Modus (Platzhalter bis apps/ existieren, Schritt 8/9)
 	@echo "dev: noch keine App – kommt mit apps/operate (Schritt 8) und apps/examples (Schritt 9)"
 
-ci: ## Vollständige CI-Pipeline lokal: Token-Drift + Lint + Test + Build
+ci: ## Vollständige CI-Pipeline lokal: Token-/templ-Drift + Lint + Test + Build
 	@$(MAKE) tokens
 	@git diff --exit-code -- tokens/tokens.css tokens/tokens.ts \
 		|| { echo "tokens/ drift – 'make tokens' ausführen und committen (INV-H2)"; exit 1; }
+	@$(MAKE) templ
+	@git diff --exit-code -- '*_templ.go' \
+		|| { echo "templ-Drift – 'make templ' ausführen und committen"; exit 1; }
 	@$(MAKE) lint
 	@$(MAKE) test
 	@$(MAKE) e2e
