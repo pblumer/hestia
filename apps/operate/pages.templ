@@ -1,0 +1,44 @@
+package main
+
+import (
+	"github.com/pblumer/hestia/go/adapters"
+	"github.com/pblumer/hestia/go/components"
+	"github.com/pblumer/hestia/go/core"
+)
+
+templ nav() {
+	<nav class="hestia-nav">
+		<a href="/instanzen">Instanzen</a>
+		<a href="/incidents">Incidents</a>
+	</nav>
+}
+
+templ InstancesPage(rows []components.Row, page components.Page) {
+	@core.Layout("Operate — Instanzen") {
+		@nav()
+		<h1>Instanzen</h1>
+		@components.Table(instanceColumns(), rows, page, "/instanzen")
+	}
+}
+
+// InstanceDetailPage bindet den read-only-Viewer ein (Klasse B) und lädt das
+// Operate-Frontend, das den Token per SSE (/events) animiert — der A+B-Nachweis.
+templ InstanceDetailPage(inst adapters.Instance, events []components.TimelineEvent) {
+	@core.Layout("Operate — Instanz " + inst.ID) {
+		@nav()
+		<h1>Instanz { inst.ID }</h1>
+		<p>Prozess { inst.ProcessID } — Status { inst.State }</p>
+		<div id="diagram" data-instance={ inst.ID } data-process={ inst.ProcessID } data-events="/events"></div>
+		<script src="/assets/operate.js" type="module"></script>
+		<h2>Verlauf</h2>
+		@components.Timeline(events)
+	}
+}
+
+templ IncidentsPage(rows []components.Row, page components.Page) {
+	@core.Layout("Operate — Incidents") {
+		@nav()
+		<h1>Incidents</h1>
+		@components.Table(incidentColumns(), rows, page, "/incidents")
+	}
+}

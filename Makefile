@@ -2,7 +2,8 @@
 SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
-GO_MODULES := core components adapters auth
+# Go-Module (Pfade relativ zum Repo-Root): Klasse-A-Bibliotheken + Apps.
+GO_MODULES := go/core go/components go/adapters go/auth apps/operate
 
 .PHONY: help setup tokens build build-go build-web lint lint-go lint-web lint-dep \
         check-invariants check-stories check-test-presence test test-go test-web \
@@ -27,7 +28,7 @@ templ: ## *_templ.go aus .templ generieren (Klasse A)
 build: build-go build-web ## Alles bauen
 
 build-go: ## Go-Module bauen
-	@set -e; for m in $(GO_MODULES); do (cd go/$$m && go build ./...); done
+	@set -e; for m in $(GO_MODULES); do (cd $$m && go build ./...); done
 
 build-web: tokens ## Web-Pakete bauen (nach Token-Generierung)
 	pnpm -r run build
@@ -35,10 +36,10 @@ build-web: tokens ## Web-Pakete bauen (nach Token-Generierung)
 lint: lint-go lint-web check-invariants check-stories check-test-presence ## Alle Lints + mechanische Checks
 
 lint-go: ## gofmt + go vet (+ golangci-lint falls vorhanden)
-	@test -z "$$(gofmt -l go)" || { echo "gofmt-Verstöße:"; gofmt -l go; exit 1; }
-	@set -e; for m in $(GO_MODULES); do (cd go/$$m && go vet ./...); done
+	@test -z "$$(gofmt -l go apps)" || { echo "gofmt-Verstöße:"; gofmt -l go apps; exit 1; }
+	@set -e; for m in $(GO_MODULES); do (cd $$m && go vet ./...); done
 	@if command -v golangci-lint >/dev/null 2>&1; then \
-		set -e; for m in $(GO_MODULES); do (cd go/$$m && golangci-lint run); done; \
+		set -e; for m in $(GO_MODULES); do (cd $$m && golangci-lint run); done; \
 	else echo "golangci-lint nicht installiert – übersprungen"; fi
 
 lint-web: ## TypeScript-Typecheck + ESLint (INV-M1)
@@ -60,7 +61,7 @@ check-test-presence: ## TDD-Guard: kein Quellmodul ohne Tests (Prinzip 4)
 test: test-go test-web ## Alle Tests (ohne E2E; siehe `make e2e`)
 
 test-go: ## Go-Tests
-	@set -e; for m in $(GO_MODULES); do (cd go/$$m && go test ./...); done
+	@set -e; for m in $(GO_MODULES); do (cd $$m && go test ./...); done
 
 test-web: ## Web-/Tooling-Tests (vitest)
 	pnpm exec vitest run
