@@ -28,6 +28,13 @@ export default defineConfig({
       reuseExistingServer: !process.env.CI,
       timeout: 180_000,
     },
+    {
+      command:
+        "pnpm --filter @hestia/examples run build && go build -C apps/examples -o /tmp/examples-e2e . && EXAMPLES_STATIC=apps/examples/static PORT=8092 exec /tmp/examples-e2e",
+      url: "http://127.0.0.1:8092/",
+      reuseExistingServer: !process.env.CI,
+      timeout: 180_000,
+    },
   ],
   use: {
     baseURL: "http://127.0.0.1:5178",

@@ -8,4 +8,5 @@ use (
 	./components
 	./core
 	../apps/operate
+	../apps/examples
 )
