@@ -29,3 +29,7 @@ apps/operate/static/*
 # examples: gebaute Assets
 apps/examples/static/*
 !apps/examples/static/.gitkeep
+
+# Versehentlich gebaute Go-Binaries (Modul-Namen)
+apps/operate/operate
+apps/examples/examples

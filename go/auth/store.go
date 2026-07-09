@@ -27,8 +27,9 @@ type SessionStore interface {
 	DeleteSession(ctx context.Context, token string) error
 }
 
-// Store bündelt beide Aspekte. Ein Backend (In-Memory jetzt; clio, SQLite in
-// Schritt 7) implementiert beides und muss authtest.RunStoreSuite bestehen.
+// Store bündelt beide Aspekte. Ein Backend (In-Memory als Referenz; SQLite in
+// go/authstore; clio später) implementiert beides und muss
+// authtest.RunStoreSuite bestehen.
 type Store interface {
 	UserStore
 	SessionStore

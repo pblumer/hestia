@@ -3,7 +3,7 @@ SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
 # Go-Module (Pfade relativ zum Repo-Root): Klasse-A-Bibliotheken + Apps.
-GO_MODULES := go/core go/components go/adapters go/auth apps/operate apps/examples
+GO_MODULES := go/core go/components go/adapters go/auth go/authstore apps/operate apps/examples
 
 .PHONY: help setup tokens build build-go build-web lint lint-go lint-web lint-dep \
         check-invariants check-stories check-test-presence test test-go test-web \

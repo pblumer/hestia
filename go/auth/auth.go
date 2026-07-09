@@ -1,7 +1,9 @@
 // Package auth ist das transport-agnostische Auth-Fundament der Klasse-A-Server
 // (ADR-0009). Es kennt kein net/http: die HTTP-Bindung (Session-Cookie,
-// Middleware) und die konkreten Stores (clio, SQLite) liegen in go/core
-// (Schritt 7). go/components darf dieses Paket nicht importieren (INV-U3).
+// Middleware) liegt in go/core, die persistenten Stores (SQLite jetzt, clio
+// später) im eigenen Modul go/authstore — so bleibt go/core frei von der
+// SQLite-Abhängigkeit. go/components darf dieses Paket nicht importieren
+// (INV-U3).
 package auth
 
 import (

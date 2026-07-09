@@ -54,10 +54,14 @@ und die neutrale Komponentenbibliothek (`go/components`, INV-H3) nicht berühren
      clio- und SQLite-Store müssen sich gegen dieselbe Interface-Testsuite
      identisch verhalten.
 
-   Wahl über Konfiguration (`HESTIA_STORE=clio|sqlite`). Die konkreten
-   clio-/SQLite-Implementierungen entstehen mit `go/core` (Schritt 7) als
-   markierte Integrationspunkte; die transport- und backend-agnostische Domäne
-   entsteht jetzt.
+   Wahl über Konfiguration (`HESTIA_STORE=clio|sqlite`). Die transport- und
+   backend-agnostische Domäne (`go/auth`) und die HTTP-Bindung (`go/core`)
+   entstehen zuerst. Die persistenten Stores leben in einem **eigenen Modul
+   `go/authstore`** — nicht in `go/core`: nur wer wirklich persistiert, zieht
+   damit die SQLite-Abhängigkeit (`modernc.org/sqlite`, pure-Go, kein cgo)
+   herein; `go/core` und die Klasse-A-Bibliotheken bleiben schlank. Der
+   SQLite-Store (`authstore.SQLiteStore`) ist umgesetzt und besteht
+   `authtest.RunStoreSuite`; der clio-Store tritt als zweites Backend daneben.
 
    *Hinweis (event-sourced clio):* Append-only bedeutet, alte Passwort-Hashes
    bleiben in der Event-Historie (nur Hashes, akzeptabel); Session-Widerruf ist
@@ -74,7 +78,9 @@ hält die Logik testbar und die Bindung austauschbar.
 
 - Neue Invarianten INV-U1..U3 (siehe `docs/invariants.md`).
 - `go/auth` wird test-first mit In-Memory-Store, bcrypt und Session-Logik
-  aufgebaut; clio-/SQLite-Store und HTTP-Middleware kommen in Schritt 7.
+  aufgebaut; die HTTP-Middleware liegt in `go/core`. Der SQLite-Store liegt im
+  eigenen Modul `go/authstore` (hält `go/core` frei von SQLite); der clio-Store
+  folgt dort als zweites Backend.
 - Eine wiederverwendbare **Interface-Testsuite** (`StoreSuite`) sichert, dass
   jedes Store-Backend (In-Memory jetzt, clio/SQLite später) identisch arbeitet.
 - User Stories US-AUTH-01 (lokaler Zero-Login, kein Store) und US-AUTH-02
