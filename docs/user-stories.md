@@ -33,5 +33,5 @@ Stories ab" ist damit ein Check, keine Behauptung.
 | US-COMP-01 | Als Admin bediene ich Tabelle, Formular, Modal und Timeline auch ohne JavaScript (sinnvoller Fallback). | go/components (A) | 7 | geplant | — |
 | US-OPS-01 | Als Operator sehe ich laufende Instanzen und Incidents (aus atlas/clio) samt Token-Animation im Diagramm. | apps/operate (A+B) | 8 | aktiv | `e2e/operate.spec.ts` |
 | US-EX-01 | Als Entwickler öffne ich je eine Beispielseite für DMN-Modeler, BPMN-Modeler und einen Klasse-A-Inspektor. | apps/examples | 9 | aktiv | `e2e/examples.spec.ts` |
-| US-AUTH-01 | Als lokaler Entwickler starte ich hestia ohne Login und arbeite sofort als impliziter Benutzer (kein Store nötig). | go/auth + go/core | 7 | geplant | — |
-| US-AUTH-02 | Als Nutzer eines hestia-Servers melde ich mich an, erhalte eine Session und kann mich abmelden; der Server bedient mehrere Benutzer gleichzeitig. | go/auth + go/core | 7 | geplant | — |
+| US-AUTH-01 | Als lokaler Entwickler starte ich hestia ohne Login und arbeite sofort als impliziter Benutzer (kein Store nötig). | go/auth + go/core | 7 | aktiv | `e2e/auth.spec.ts` |
+| US-AUTH-02 | Als Nutzer eines hestia-Servers melde ich mich an, erhalte eine Session und kann mich abmelden; der Server bedient mehrere Benutzer gleichzeitig. | go/auth + authstore + go/core | 7 | aktiv | `e2e/auth.spec.ts` |

@@ -35,6 +35,15 @@ export default defineConfig({
       reuseExistingServer: !process.env.CI,
       timeout: 180_000,
     },
+    {
+      // Operate im server-Modus (Mehrbenutzer): SQLite-Store, geseedeter Admin —
+      // deckt US-AUTH-02 (Login/Session) ab. Frische DB pro Lauf.
+      command:
+        "rm -f /tmp/operate-auth-e2e.db && go build -C apps/operate -o /tmp/operate-srv-e2e . && OPERATE_STATIC=apps/operate/static HESTIA_MODE=server HESTIA_DB=/tmp/operate-auth-e2e.db HESTIA_ADMIN_USER=admin HESTIA_ADMIN_PASSWORD=geheim PORT=8094 exec /tmp/operate-srv-e2e",
+      url: "http://127.0.0.1:8094/login",
+      reuseExistingServer: !process.env.CI,
+      timeout: 180_000,
+    },
   ],
   use: {
     baseURL: "http://127.0.0.1:5178",

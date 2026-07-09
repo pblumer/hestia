@@ -13,6 +13,27 @@ templ nav() {
 	</nav>
 }
 
+// LoginPage ist das server-Modus-Anmeldeformular (Klasse A, JS-frei). Bei
+// fehlgeschlagener Anmeldung erscheint ein Hinweis; das Passwortfeld wird nie
+// zurückgespiegelt.
+templ LoginPage(fehler bool) {
+	@core.Layout("Operate — Anmeldung") {
+		<h1>Anmeldung</h1>
+		if fehler {
+			<p role="alert" style="color:var(--color-danger)">Ungültige Zugangsdaten.</p>
+		}
+		<form method="post" action="/login" class="hestia-form">
+			<label>Benutzername
+				<input name="username" autocomplete="username" required/>
+			</label>
+			<label>Passwort
+				<input name="password" type="password" autocomplete="current-password" required/>
+			</label>
+			<button type="submit">Anmelden</button>
+		</form>
+	}
+}
+
 templ InstancesPage(rows []components.Row, page components.Page) {
 	@core.Layout("Operate — Instanzen") {
 		@nav()
