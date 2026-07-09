@@ -18,9 +18,9 @@ export default defineConfig({
       command: "pnpm exec vite",
       url: "http://127.0.0.1:5178/e2e/fixtures/modeler-kit/",
       reuseExistingServer: !process.env.CI,
-      // Kalter Start bündelt diagram-js/bpmn-js/dmn-js erstmalig (optimizeDeps)
-      // — auf einem 2-Kern-CI-Runner deutlich über 120 s. Großzügiges Budget.
-      timeout: 240_000,
+      // Etwas Puffer für den Kaltstart auf CI-Runnern (Dep-Optimierung); die
+      // eigentliche CI-Blockade war das Interface-Binding, siehe vite.config.ts.
+      timeout: 120_000,
     },
     {
       // Frontend bauen, Go-Server bauen und (per exec, sauber killbar) starten.
