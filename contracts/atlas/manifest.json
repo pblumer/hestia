@@ -1,0 +1,8 @@
+{
+  "artifact": "atlas-contract",
+  "version": "0.1.0",
+  "namespace": "http://hestia/atlas/bpmn",
+  "packages": ["atlas.json"],
+  "consumers": ["@hestia/modeler-bpmn", "atlas"],
+  "note": "Ausführungssemantik der atlas-Engine, ausschließlich über BPMN extensionElements (INV-B3). SSOT zwischen modeler-bpmn und atlas (INV-M5). Der konkrete atlas-API-Umfang ist ein Integrationspunkt und wächst versioniert."
+}

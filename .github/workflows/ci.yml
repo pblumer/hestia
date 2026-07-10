@@ -1,0 +1,68 @@
+name: ci
+
+on:
+  push:
+    branches: [main, "claude/**"]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.x"
+
+      # templ für die Klasse-A-Templates (gepinnte Version, siehe Makefile).
+      - name: Install templ
+        run: |
+          go install github.com/a-h/templ/cmd/templ@v0.3.977
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      - name: Setup pnpm
+        # Version kommt aus package.json ("packageManager": pnpm@…). Kein
+        # version-Input hier, sonst bricht action-setup@v4 mit einem Konflikt ab.
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install web deps
+        run: pnpm install --frozen-lockfile
+
+      # xmllint für die BPMN-XSD-Validierung (INV-B1).
+      - name: Install xmllint
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
+      # INV-H2: generierte Tokens dürfen nicht von der SSOT abweichen.
+      - name: Token-Drift (INV-H2)
+        run: |
+          node tokens/generate.mjs
+          git diff --exit-code -- tokens/tokens.css tokens/tokens.ts \
+            || { echo "::error::tokens/ drift – 'make tokens' committen (INV-H2)"; exit 1; }
+
+      # INV-H1, INV-H3, INV-M1: mechanische Klassentrennung/Modulgrenzen.
+      - name: Invarianten (INV-H1/H3/M1)
+        run: node tools/ci/check-invariants.mjs
+
+      - name: Lint
+        run: make lint
+
+      - name: Test
+        run: make test
+
+      # E2E deckt die aktiven User Stories ab (docs/user-stories.md).
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: E2E (Playwright)
+        run: make e2e
+
+      - name: Build
+        run: make build

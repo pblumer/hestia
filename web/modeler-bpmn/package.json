@@ -1,0 +1,20 @@
+{
+  "name": "@hestia/modeler-bpmn",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "BPMN-2.0.2-Modeler: Basis-Moddle aus den OMG-Schemas + atlas-Extension-Moddle (INV-B3/M5), vollständiges DI (INV-B2), eCH-0158-Linter (INV-B4). Kein direkter bpmn-js-Import (INV-M1).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "echo '@hestia/modeler-bpmn: Ausbau in Schritt 5'"
+  },
+  "dependencies": {
+    "@hestia/atlas-contract": "workspace:*",
+    "@hestia/modeler-kit": "workspace:*",
+    "diagram-js": "^15.19.0",
+    "moddle": "^8.1.0",
+    "moddle-xml": "^12.0.0"
+  }
+}

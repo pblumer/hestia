@@ -1,0 +1,13 @@
+{
+  "artifact": "dmn-contract",
+  "dmnVersion": "1.5",
+  "version": "1.5.0",
+  "namespaces": {
+    "model": "https://www.omg.org/spec/DMN/20240513/MODEL/",
+    "dmndi": "https://www.omg.org/spec/DMN/20240513/DMNDI/",
+    "dc": "https://www.omg.org/spec/DMN/20180521/DC/",
+    "di": "https://www.omg.org/spec/DMN/20180521/DI/"
+  },
+  "packages": ["dmn.json", "dc.json", "di.json", "dmndi.json"],
+  "consumers": ["@hestia/modeler-dmn", "temis"]
+}

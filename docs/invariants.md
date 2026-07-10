@@ -75,3 +75,19 @@ mechanisch (Lint, Test, Import-Check) erkennbar sein soll.
 - **INV-A1 (JS-Fallback, Klasse A):** Jede interaktive Klasse-A-Komponente
   liefert einen sinnvollen Zustand ohne JavaScript (progressive enhancement via
   HTMX). Modeler (Klasse B) sind hiervon ausgenommen.
+
+## Mehrbenutzer / Auth (ADR-0009)
+
+- **INV-U1 (Modus-Trennung):** Im `local`-Modus existiert genau ein impliziter
+  Benutzer, es findet keine Authentifizierung und keine Persistenz statt. Im
+  `server`-Modus ist jede Anfrage ohne gültige Session anonym. Als Test in
+  `go/auth` abgesichert.
+
+- **INV-U2 (Passwort-Hashing):** Passwörter werden nie im Klartext gespeichert
+  oder protokolliert, ausschließlich als bcrypt-Hash. Die `User`-Struktur hat
+  kein Klartext-Passwortfeld. Als Test abgesichert.
+
+- **INV-U3 (Auth-Isolation):** `go/components` importiert `go/auth` nicht; der
+  Benutzer-/Principal-Kontext fließt ausschließlich über `go/core` und
+  `go/adapters`. Verschärft INV-H3; mechanisch geprüft durch
+  `tools/ci/check-invariants.mjs`.

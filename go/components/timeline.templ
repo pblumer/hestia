@@ -1,0 +1,20 @@
+package components
+
+// Timeline rendert eine Ereignisliste (z. B. Instanz-Historie). Serverseitig
+// gerendert und damit von Natur aus JS-frei (INV-A1); ein SSE/Polling-Stream
+// (go/core) kann sie live ergänzen.
+templ Timeline(events []TimelineEvent) {
+	<ol class="hestia-timeline">
+		for _, e := range events {
+			<li class="hestia-timeline-item">
+				<time>{ e.Time }</time>
+				<div class="hestia-timeline-body">
+					<strong>{ e.Title }</strong>
+					if e.Detail != "" {
+						<p>{ e.Detail }</p>
+					}
+				</div>
+			</li>
+		}
+	</ol>
+}

@@ -1,0 +1,88 @@
+# hestia — Task-Runner. Siehe docs/hestia-concept.md und docs/invariants.md.
+SHELL := /bin/bash
+.DEFAULT_GOAL := help
+
+# Go-Module (Pfade relativ zum Repo-Root): Klasse-A-Bibliotheken + Apps.
+GO_MODULES := go/core go/components go/adapters go/auth go/authstore apps/operate apps/examples
+
+.PHONY: help setup tokens build build-go build-web lint lint-go lint-web lint-dep \
+        check-invariants check-stories check-test-presence test test-go test-web \
+        e2e dev ci clean
+
+help: ## Diese Übersicht
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
+		awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}'
+
+TEMPL_VERSION := v0.3.977
+
+setup: ## Toolchain installieren (templ, pnpm-Deps)
+	@command -v templ >/dev/null 2>&1 || go install github.com/a-h/templ/cmd/templ@$(TEMPL_VERSION)
+	pnpm install
+
+tokens: ## tokens.css + tokens.ts aus tokens.json generieren (INV-H2)
+	node tokens/generate.mjs
+
+templ: ## *_templ.go aus .templ generieren (Klasse A)
+	templ generate
+
+build: build-go build-web ## Alles bauen
+
+build-go: ## Go-Module bauen
+	@set -e; for m in $(GO_MODULES); do (cd $$m && go build ./...); done
+
+build-web: tokens ## Web-Pakete bauen (nach Token-Generierung)
+	pnpm -r run build
+
+lint: lint-go lint-web check-invariants check-stories check-test-presence ## Alle Lints + mechanische Checks
+
+lint-go: ## gofmt + go vet (+ golangci-lint falls vorhanden)
+	@test -z "$$(gofmt -l go apps)" || { echo "gofmt-Verstöße:"; gofmt -l go apps; exit 1; }
+	@set -e; for m in $(GO_MODULES); do (cd $$m && go vet ./...); done
+	@if command -v golangci-lint >/dev/null 2>&1; then \
+		set -e; for m in $(GO_MODULES); do (cd $$m && golangci-lint run); done; \
+	else echo "golangci-lint nicht installiert – übersprungen"; fi
+
+lint-web: ## TypeScript-Typecheck + ESLint (INV-M1)
+	pnpm exec tsc --noEmit -p tsconfig.json
+	pnpm exec eslint .
+
+lint-dep: ## dependency-cruiser (INV-M1/H1 auf Graph-Ebene; ab Schritt 3 scharf)
+	pnpm exec depcruise web apps --config .dependency-cruiser.cjs
+
+check-invariants: ## Mechanische Invarianten-Checks (INV-H1, INV-H3, INV-M1)
+	node tools/ci/check-invariants.mjs
+
+check-stories: ## E2E-Abdeckung: jede aktive User Story hat einen E2E-Test
+	node tools/ci/check-user-stories.mjs
+
+check-test-presence: ## TDD-Guard: kein Quellmodul ohne Tests (Prinzip 4)
+	node tools/ci/check-test-presence.mjs
+
+test: test-go test-web ## Alle Tests (ohne E2E; siehe `make e2e`)
+
+test-go: ## Go-Tests
+	@set -e; for m in $(GO_MODULES); do (cd $$m && go test ./...); done
+
+test-web: ## Web-/Tooling-Tests (vitest)
+	pnpm exec vitest run
+
+e2e: tokens ## Playwright-E2E (deckt aktive User Stories ab)
+	pnpm exec playwright test
+
+dev: ## Dev-Modus (Platzhalter bis apps/ existieren, Schritt 8/9)
+	@echo "dev: noch keine App – kommt mit apps/operate (Schritt 8) und apps/examples (Schritt 9)"
+
+ci: ## Vollständige CI-Pipeline lokal: Token-/templ-Drift + Lint + Test + Build
+	@$(MAKE) tokens
+	@git diff --exit-code -- tokens/tokens.css tokens/tokens.ts \
+		|| { echo "tokens/ drift – 'make tokens' ausführen und committen (INV-H2)"; exit 1; }
+	@$(MAKE) templ
+	@git diff --exit-code -- '*_templ.go' \
+		|| { echo "templ-Drift – 'make templ' ausführen und committen"; exit 1; }
+	@$(MAKE) lint
+	@$(MAKE) test
+	@$(MAKE) e2e
+	@$(MAKE) build
+
+clean: ## Build-Artefakte entfernen
+	rm -rf node_modules web/*/node_modules apps/*/node_modules web/*/dist apps/*/dist

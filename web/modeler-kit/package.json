@@ -1,0 +1,17 @@
+{
+  "name": "@hestia/modeler-kit",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "diagram-js-Fundament: Palette, Context-Pad, Selektion/Undo, Properties-Panel, Keybindings, Theming aus Tokens. Kein BPMN-/DMN-Wissen (INV-M2).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "echo '@hestia/modeler-kit: Ausbau in Schritt 3'"
+  },
+  "dependencies": {
+    "@hestia/tokens": "workspace:*",
+    "diagram-js": "^15.19.0"
+  }
+}

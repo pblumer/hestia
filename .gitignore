@@ -1,0 +1,35 @@
+# Node / pnpm
+node_modules/
+dist/
+*.tsbuildinfo
+.pnpm-store/
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+.last-run.json
+
+# Go
+bin/
+*.out
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+
+# HINWEIS: tokens/tokens.css und tokens/tokens.ts sind generiert, aber bewusst
+# eingecheckt — der CI-Drift-Check (INV-H2) vergleicht sie gegen die Regenerierung.
+
+# operate: gebaute Assets (Frontend-Bundle + kopierte Tokens)
+apps/operate/static/*
+!apps/operate/static/.gitkeep
+
+# examples: gebaute Assets
+apps/examples/static/*
+!apps/examples/static/.gitkeep
+
+# Versehentlich gebaute Go-Binaries (Modul-Namen)
+apps/operate/operate
+apps/examples/examples

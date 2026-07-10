@@ -1,0 +1,21 @@
+package core
+
+// Layout ist die Basis-Seite der Klasse-A-Oberflächen: lädt die generierten
+// Design-Tokens (INV-H2) und HTMX. Der Inhalt wird als children eingesetzt.
+templ Layout(title string) {
+	<!DOCTYPE html>
+	<html lang="de">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<title>{ title }</title>
+			<link rel="stylesheet" href="/assets/tokens.css"/>
+			<script src="/assets/htmx.min.js" defer></script>
+		</head>
+		<body>
+			<main class="hestia-main">
+				{ children... }
+			</main>
+		</body>
+	</html>
+}

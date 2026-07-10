@@ -1,0 +1,16 @@
+{
+  "name": "@hestia/examples",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Beispiel-Frontends (DMN-/BPMN-Modeler), eingebettet in den Go-Server.",
+  "scripts": {
+    "build": "vite build && node scripts/copy-assets.mjs"
+  },
+  "dependencies": {
+    "@hestia/modeler-bpmn": "workspace:*",
+    "@hestia/modeler-dmn": "workspace:*",
+    "@hestia/tokens": "workspace:*",
+    "diagram-js": "^15.19.0"
+  }
+}

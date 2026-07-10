@@ -1,0 +1,53 @@
+package main
+
+import (
+	"github.com/pblumer/hestia/go/components"
+	"github.com/pblumer/hestia/go/core"
+)
+
+templ IndexPage() {
+	@core.Layout("hestia — Beispiele") {
+		<h1>hestia — Beispiele</h1>
+		<ul>
+			<li><a href="/dmn">DMN-Modeler</a></li>
+			<li><a href="/bpmn">BPMN-Modeler</a></li>
+			<li><a href="/inspector">Klasse-A-Inspektor</a></li>
+		</ul>
+	}
+}
+
+templ DmnPage() {
+	@core.Layout("Beispiel — DMN-Modeler") {
+		<h1>DMN-Modeler</h1>
+		<link rel="stylesheet" href="/assets/examples.css"/>
+		<div id="diagram" style="height:70vh;border:1px solid var(--color-border);border-radius:var(--radius-md)"></div>
+		<script src="/assets/dmn.js" type="module"></script>
+	}
+}
+
+templ BpmnPage() {
+	@core.Layout("Beispiel — BPMN-Modeler") {
+		<h1>BPMN-Modeler</h1>
+		<link rel="stylesheet" href="/assets/examples.css"/>
+		<div id="diagram" style="height:70vh;border:1px solid var(--color-border);border-radius:var(--radius-md)"></div>
+		<script src="/assets/bpmn.js" type="module"></script>
+	}
+}
+
+// InspectorPage zeigt die Klasse-A-Komponenten (rein server-gerendert, JS-frei).
+templ InspectorPage() {
+	@core.Layout("Beispiel — Klasse-A-Inspektor") {
+		<h1>Klasse-A-Inspektor</h1>
+		<h2>Tabelle</h2>
+		@components.Table(inspectorColumns(), inspectorRows(), components.Page{Number: 1, Size: 20, Total: 2}, "/inspector")
+		<h2>Formular</h2>
+		@components.Form("/inspector", inspectorFields(), components.FormData{}, map[string]string{})
+		<h2>Modal</h2>
+		@components.ModalTrigger("demo", "Modal öffnen")
+		@components.Modal("demo", "Beispiel-Modal") {
+			<p>Ein anker-basiertes Modal — öffnet und schließt ohne JavaScript.</p>
+		}
+		<h2>Timeline</h2>
+		@components.Timeline(inspectorTimeline())
+	}
+}

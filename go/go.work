@@ -1,0 +1,13 @@
+go 1.24
+
+// Go-Workspace der Klasse-A-Module (siehe docs/hestia-concept.md).
+// INV-H1: Diese Module teilen mit web/ ausschließlich tokens/ (als generiertes CSS).
+use (
+	../apps/examples
+	../apps/operate
+	./adapters
+	./auth
+	./authstore
+	./components
+	./core
+)

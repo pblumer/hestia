@@ -1,0 +1,15 @@
+{
+  "name": "@hestia/tokens",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Design-Tokens als SSOT (INV-H2). Die einzige geteilte Quelle zwischen Klasse A und B (INV-H1).",
+  "exports": {
+    ".": "./tokens.ts",
+    "./tokens.css": "./tokens.css",
+    "./tokens.json": "./tokens.json"
+  },
+  "scripts": {
+    "build": "node generate.mjs"
+  }
+}
