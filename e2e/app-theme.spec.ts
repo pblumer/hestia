@@ -5,6 +5,7 @@ import { test, expect } from "@playwright/test";
 // Fläche aus den Tokens, sodass das Basis-Stylesheet das Theme durchreicht.
 
 const base = "http://127.0.0.1:8093";
+const server = "http://127.0.0.1:8094"; // operate im server-Modus
 const LIGHT_BG = "rgb(255, 255, 255)"; // --color-bg hell (#ffffff)
 const DARK_BG = "rgb(14, 17, 22)"; // --color-bg dunkel (#0e1116)
 
@@ -41,4 +42,19 @@ test("US-TOK-01: data-theme überschreibt die Systemeinstellung explizit", async
   expect(await htmlBg(p2)).toBe(LIGHT_BG);
   await ctx.close();
   await ctx2.close();
+});
+
+// Regressionswache: die anonyme Login-Seite (server-Modus) muss ihre Tokens
+// laden dürfen — sonst bleibt var(--color-bg) undefiniert und die Seite ist
+// dunkel-auf-dunkel. Ein dunkler, aus den Tokens bezogener Hintergrund beweist,
+// dass /assets/tokens.css nicht hinter dem Login-Guard liegt.
+test("US-TOK-02: Login-Seite (server-Modus) lädt Tokens und ist theme-fähig", async ({
+  browser,
+}) => {
+  const ctx = await browser.newContext({ colorScheme: "dark" });
+  const page = await ctx.newPage();
+  await page.goto(`${server}/login`, { waitUntil: "domcontentloaded" });
+  await expect(page.locator('form[action="/login"]')).toBeVisible();
+  expect(await htmlBg(page)).toBe(DARK_BG);
+  await ctx.close();
 });

@@ -107,10 +107,12 @@ func (s *server) handler() http.Handler {
 	app.HandleFunc("GET /incidents", s.incidents)
 	app.Handle("GET /events", core.SSEHandler(clioBridge{s.clio}))
 	app.Handle("GET /events/poll", core.PollHandler(clioBridge{s.clio}))
-	app.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir(s.staticDir))))
 
 	mux := http.NewServeMux()
-	// Öffentliche Auth-Endpunkte (nur im server-Modus fachlich relevant).
+	// Öffentliche Endpunkte: Auth (nur server-Modus fachlich relevant) und die
+	// statischen Assets. Die Assets MÜSSEN ungeschützt sein, sonst kann die
+	// anonyme Login-Seite ihre Design-Tokens (tokens.css) nicht laden.
+	mux.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir(s.staticDir))))
 	mux.HandleFunc("GET /login", s.loginPage)
 	mux.HandleFunc("POST /login", s.login)
 	mux.HandleFunc("POST /logout", s.logout)

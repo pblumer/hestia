@@ -94,6 +94,16 @@ func TestServerModeLoginSuccessSetsCookieAndRedirects(t *testing.T) {
 	}
 }
 
+// Statische Assets (tokens.css, JS) müssen im server-Modus öffentlich sein —
+// sonst kann die anonyme Login-Seite ihre eigenen Design-Tokens nicht laden
+// (führte zu dunkel-auf-dunkel). Kein Redirect zum Login für /assets/.
+func TestServerModeAssetsPublic(t *testing.T) {
+	rr := do(serverModeServer(t).handler(), "/assets/tokens.css")
+	if rr.Code == http.StatusFound && rr.Header().Get("Location") == "/login" {
+		t.Fatalf("Assets sind hinter dem Login-Guard (Redirect nach /login)")
+	}
+}
+
 func TestServerModeLoginInvalidRejected(t *testing.T) {
 	rr := postForm(serverModeServer(t).handler(), "/login",
 		url.Values{"username": {"admin"}, "password": {"falsch"}}, nil)
