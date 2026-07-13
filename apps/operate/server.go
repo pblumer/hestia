@@ -113,12 +113,15 @@ func (s *server) handler() http.Handler {
 	// statischen Assets. Die Assets MÜSSEN ungeschützt sein, sonst kann die
 	// anonyme Login-Seite ihre Design-Tokens (tokens.css) nicht laden.
 	mux.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir(s.staticDir))))
+	mux.Handle("GET /theme/{value}", core.ThemeHandler())
 	mux.HandleFunc("GET /login", s.loginPage)
 	mux.HandleFunc("POST /login", s.login)
 	mux.HandleFunc("POST /logout", s.logout)
 	mux.Handle("/", s.requireLogin(app))
 
-	return s.authGuard.Middleware(mux)
+	// ThemeMiddleware liest die Theme-Wahl fürs Layout; authGuard löst den
+	// Principal auf. Beide umschließen alle Seiten.
+	return s.authGuard.Middleware(core.ThemeMiddleware(mux))
 }
 
 // requireLogin schützt die App-Seiten. Anonyme Anfragen werden zum Login

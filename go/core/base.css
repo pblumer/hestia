@@ -34,6 +34,32 @@ body {
   padding: var(--space-6) var(--space-4) var(--space-12);
 }
 
+/* Theme-Umschalter (oben rechts) ----------------------------------------- */
+.hestia-theme {
+  display: flex;
+  gap: var(--space-1);
+  justify-content: flex-end;
+  align-items: center;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-2) var(--space-4) 0;
+  font-size: var(--text-size-sm);
+}
+.hestia-theme a {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  color: var(--color-fg-muted);
+  text-decoration: none;
+}
+.hestia-theme a:hover {
+  background: var(--color-surface);
+  color: var(--color-fg);
+}
+.hestia-theme a[aria-current="true"] {
+  color: var(--color-accent-fg);
+  background: var(--color-accent);
+}
+
 h1 {
   font-size: var(--text-size-2xl);
 }

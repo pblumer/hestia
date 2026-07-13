@@ -58,3 +58,27 @@ test("US-TOK-02: Login-Seite (server-Modus) lädt Tokens und ist theme-fähig", 
   expect(await htmlBg(page)).toBe(DARK_BG);
   await ctx.close();
 });
+
+// US-TOK-01 im UI: der JS-freie Umschalter setzt das Theme per Cookie, es hält
+// über Seitenwechsel und überschreibt die Systempräferenz. Gegen examples
+// (8092), da ohne Login. Systempräferenz absichtlich hell.
+test("US-TOK-01: JS-freier Theme-Umschalter setzt und hält die Wahl", async ({ browser }) => {
+  const ctx = await browser.newContext({ colorScheme: "light" });
+  const page = await ctx.newPage();
+  await page.goto("http://127.0.0.1:8092/inspector", { waitUntil: "domcontentloaded" });
+
+  // Explizit dunkel wählen -> dunkel, trotz hellem System.
+  await page.getByRole("link", { name: "Dunkel" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  expect(await htmlBg(page)).toBe(DARK_BG);
+
+  // Wahl hält über einen Seitenwechsel (Cookie, kein JS).
+  await page.goto("http://127.0.0.1:8092/", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+
+  // Zurück auf Auto -> kein explizites Theme mehr, folgt wieder dem System (hell).
+  await page.getByRole("link", { name: "Auto" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "");
+  expect(await htmlBg(page)).toBe(LIGHT_BG);
+  await ctx.close();
+});

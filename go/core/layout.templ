@@ -4,7 +4,7 @@ package core
 // Design-Tokens (INV-H2) und HTMX. Der Inhalt wird als children eingesetzt.
 templ Layout(title string) {
 	<!DOCTYPE html>
-	<html lang="de">
+	<html lang="de" data-theme={ ThemeFrom(ctx) }>
 		<head>
 			<meta charset="utf-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -14,9 +14,29 @@ templ Layout(title string) {
 			<script src="/assets/htmx.min.js" defer></script>
 		</head>
 		<body>
+			@ThemeToggle()
 			<main class="hestia-main">
 				{ children... }
 			</main>
 		</body>
 	</html>
+}
+
+// ThemeToggle ist der JS-freie Hell/Dunkel-Umschalter (US-TOK-01): drei Links,
+// die das Theme-Cookie setzen und zur aktuellen Seite zurückführen. Die aktive
+// Wahl trägt aria-current="true".
+templ ThemeToggle() {
+	<nav class="hestia-theme" aria-label="Darstellung">
+		@themeLink("auto", "Auto")
+		@themeLink("light", "Hell")
+		@themeLink("dark", "Dunkel")
+	</nav>
+}
+
+templ themeLink(value string, label string) {
+	if themeIsCurrent(ctx, value) {
+		<a href={ templ.SafeURL(themeURL(ctx, value)) } aria-current="true">{ label }</a>
+	} else {
+		<a href={ templ.SafeURL(themeURL(ctx, value)) }>{ label }</a>
+	}
 }

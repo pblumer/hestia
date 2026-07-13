@@ -21,9 +21,10 @@ func main() {
 	mux.Handle("GET /bpmn", core.Handler(BpmnPage()))
 	mux.Handle("GET /inspector", core.Handler(InspectorPage()))
 	mux.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir(staticDir))))
+	mux.Handle("GET /theme/{value}", core.ThemeHandler())
 
 	log.Printf("examples hört auf %s", addr)
-	log.Fatal(http.ListenAndServe(addr, mux))
+	log.Fatal(http.ListenAndServe(addr, core.ThemeMiddleware(mux)))
 }
 
 func envOr(key, def string) string {
