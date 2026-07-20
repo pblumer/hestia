@@ -1,18 +1,19 @@
 /* Basis-Stil der Klasse-A-Oberflächen. Bezieht ALLE Farben aus den Design-
    Tokens (INV-H2/H3) — dadurch schaltet die Oberfläche automatisch mit
-   prefers-color-scheme (US-TOK-02) und explizit über [data-theme] (US-TOK-01).
-   Kein hartkodierter Farbwert. */
+   prefers-color-scheme (US-TOK-02) und explizit über [data-mode] (US-TOK-01);
+   die Marke wählt [data-theme] (US-THEME-01). Kein hartkodierter Farbwert. */
 
-/* Native Controls (Formularfelder, Scrollbars) folgen dem aktiven Theme. */
+/* Native Controls (Formularfelder, Scrollbars) folgen dem aktiven Mode. Der
+   Mode ist orthogonal zum Theme, daher hier nur auf [data-mode] bezogen. */
 :root {
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root:not([data-mode="light"]) {
     color-scheme: dark;
   }
 }
-[data-theme="dark"] {
+[data-mode="dark"] {
   color-scheme: dark;
 }
 
@@ -32,6 +33,45 @@ body {
   max-width: 960px;
   margin: 0 auto;
   padding: var(--space-6) var(--space-4) var(--space-12);
+}
+
+/* Theme-Umschalter (JS-frei) ------------------------------------------------ */
+.hestia-themebar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3);
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-2) var(--space-4);
+  border-bottom: var(--space-px) solid var(--color-border);
+  background: var(--color-surface);
+  font-size: var(--text-size-sm);
+}
+.hestia-themebar__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  color: var(--color-fg-muted);
+}
+.hestia-themebar select {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-size-sm);
+  color: var(--color-fg);
+  background: var(--color-surface-raised);
+  border: var(--space-px) solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+}
+.hestia-themebar button {
+  align-self: flex-end;
+  padding: var(--space-1) var(--space-4);
+  font-size: var(--text-size-sm);
+  font-weight: var(--text-weight-medium);
+  color: var(--color-accent-fg);
+  background: var(--color-accent);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
 }
 
 h1 {

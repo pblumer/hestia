@@ -20,10 +20,13 @@ func main() {
 	mux.Handle("GET /dmn", core.Handler(DmnPage()))
 	mux.Handle("GET /bpmn", core.Handler(BpmnPage()))
 	mux.Handle("GET /inspector", core.Handler(InspectorPage()))
+	mux.Handle("GET /theme", core.ThemeHandler())
 	mux.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir(staticDir))))
 
+	// ThemeMiddleware legt die Theme-/Mode-Wahl (Cookie) in den Kontext, damit
+	// das Layout den Umschalter korrekt vorbelegt und die Attribute setzt.
 	log.Printf("examples hört auf %s", addr)
-	log.Fatal(http.ListenAndServe(addr, mux))
+	log.Fatal(http.ListenAndServe(addr, core.ThemeMiddleware(mux)))
 }
 
 func envOr(key, def string) string {

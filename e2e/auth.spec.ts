@@ -25,13 +25,13 @@ test("US-AUTH-02: Server verlangt Login, vergibt Session und weist Falschanmeldu
   // Falsche Zugangsdaten: Hinweis, keine Session.
   await page.fill('input[name="username"]', "admin");
   await page.fill('input[name="password"]', "falsch");
-  await page.click('button[type="submit"]');
+  await page.click('form[action="/login"] button[type="submit"]');
   await expect(page.getByRole("alert")).toBeVisible();
 
   // Korrekte Zugangsdaten: Weiterleitung in die geschützte App.
   await page.fill('input[name="username"]', "admin");
   await page.fill('input[name="password"]', "geheim");
-  await page.click('button[type="submit"]');
+  await page.click('form[action="/login"] button[type="submit"]');
   await expect(page).toHaveURL(`${server}/instanzen`);
   await expect(page.getByRole("heading", { name: "Instanzen" })).toBeVisible();
 

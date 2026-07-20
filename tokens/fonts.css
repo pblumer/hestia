@@ -1,0 +1,38 @@
+/* Gebündelte Schriften der Token-Schicht. Das 'swiss'-Theme setzt
+   text-family-sans auf 'Noto Sans' (siehe tokens.json); hier wird die Familie
+   an die mitgelieferten Schriftschnitte gebunden. Die Dateien liegen unter
+   tokens/fonts/ und werden von den Apps neben tokens.css unter /assets/
+   ausgeliefert (relative url() gilt gegen den fonts.css-Ort). Noto Sans steht
+   unter der SIL Open Font License 1.1 (siehe tokens/fonts/README.md). */
+
+@font-face {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/NotoSans-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/NotoSans-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Noto Sans";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/NotoSans-Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Noto Sans";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/NotoSans-BoldItalic.ttf") format("truetype");
+}

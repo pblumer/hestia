@@ -26,19 +26,19 @@ test("US-TOK-02: operate folgt prefers-color-scheme automatisch", async ({ brows
   await light.close();
 });
 
-test("US-TOK-01: data-theme überschreibt die Systemeinstellung explizit", async ({ browser }) => {
+test("US-TOK-01: data-mode überschreibt die Systemeinstellung explizit", async ({ browser }) => {
   // Systempräferenz hell, aber explizit dunkel gewählt -> dunkel gewinnt.
   const ctx = await browser.newContext({ colorScheme: "light" });
   const page = await ctx.newPage();
   await page.goto(`${base}/instanzen`, { waitUntil: "domcontentloaded" });
-  await page.evaluate(() => document.documentElement.setAttribute("data-theme", "dark"));
+  await page.evaluate(() => document.documentElement.setAttribute("data-mode", "dark"));
   expect(await htmlBg(page)).toBe(DARK_BG);
 
   // Und zurück auf explizit hell trotz dunkler Systempräferenz.
   const ctx2 = await browser.newContext({ colorScheme: "dark" });
   const p2 = await ctx2.newPage();
   await p2.goto(`${base}/instanzen`, { waitUntil: "domcontentloaded" });
-  await p2.evaluate(() => document.documentElement.setAttribute("data-theme", "light"));
+  await p2.evaluate(() => document.documentElement.setAttribute("data-mode", "light"));
   expect(await htmlBg(p2)).toBe(LIGHT_BG);
   await ctx.close();
   await ctx2.close();

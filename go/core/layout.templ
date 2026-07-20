@@ -1,22 +1,58 @@
 package core
 
 // Layout ist die Basis-Seite der Klasse-A-Oberflächen: lädt die generierten
-// Design-Tokens (INV-H2) und HTMX. Der Inhalt wird als children eingesetzt.
+// Design-Tokens (INV-H2) und HTMX, setzt die aktive Theme-/Mode-Wahl als
+// Attribute auf <html> und rendert den JS-freien Theme-Umschalter (INV-A1).
+// Die ThemeState kommt aus dem Kontext (ThemeMiddleware / WithTheme).
 templ Layout(title string) {
+	{{ st := ThemeFromContext(ctx) }}
 	<!DOCTYPE html>
-	<html lang="de">
+	<html
+		lang="de"
+		data-theme={ st.Theme }
+		if st.Mode != DefaultMode {
+			data-mode={ st.Mode }
+		}
+	>
 		<head>
 			<meta charset="utf-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<title>{ title }</title>
 			<link rel="stylesheet" href="/assets/tokens.css"/>
+			<link rel="stylesheet" href="/assets/fonts.css"/>
 			@baseStyle()
 			<script src="/assets/htmx.min.js" defer></script>
 		</head>
 		<body>
+			@ThemeBar(st)
 			<main class="hestia-main">
 				{ children... }
 			</main>
 		</body>
 	</html>
+}
+
+// ThemeBar ist der server-seitige, JS-freie Umschalter: ein GET-Formular auf
+// /theme. Ohne JavaScript wählt der Nutzer und bestätigt mit „Übernehmen"; der
+// Server persistiert die Wahl als Cookie und rendert neu (US-THEME-01).
+templ ThemeBar(st ThemeState) {
+	<form class="hestia-themebar" method="get" action="/theme" role="group" aria-label="Darstellung">
+		<label class="hestia-themebar__field">
+			<span>Theme</span>
+			<select name="theme">
+				for _, o := range Themes() {
+					<option value={ o.Value } selected?={ o.Value == st.Theme }>{ o.Label }</option>
+				}
+			</select>
+		</label>
+		<label class="hestia-themebar__field">
+			<span>Ansicht</span>
+			<select name="mode">
+				for _, o := range Modes() {
+					<option value={ o.Value } selected?={ o.Value == st.Mode }>{ o.Label }</option>
+				}
+			</select>
+		</label>
+		<button type="submit">Übernehmen</button>
+	</form>
 }
